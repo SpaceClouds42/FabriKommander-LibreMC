@@ -7,7 +7,8 @@ fun identifierToWorldName(id: Identifier) = when (id.toString()) {
     "minecraft:overworld" -> "Overworld"
     "minecraft:the_nether" -> "The Nether"
     "minecraft:the_end" -> "The End"
-
+    "spawn_dimension:spawn" -> "Spawn"
+    
     else -> {
         val mod = FabricLoader.getInstance().getModContainer(id.namespace)
 
