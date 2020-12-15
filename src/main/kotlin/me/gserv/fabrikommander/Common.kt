@@ -27,14 +27,17 @@ object Common : ModInitializer {
         HomesCommand(dispatcher).register()
         SetHomeCommand(dispatcher).register()
 
-        // Teleport commands
+        // TPA commands
         TpaCommand(dispatcher).register()
         TpaHereCommand(dispatcher).register()
         TpAcceptCommand(dispatcher).register()
         TpCancelCommand(dispatcher).register()
         TpDenyCommand(dispatcher).register()
+        
+        // Teleport commands
+        BackCommand(dispatcher).register()
 
-        // Misc comands
+        // Misc commands
         PingCommand(dispatcher).register()
     }
 }
