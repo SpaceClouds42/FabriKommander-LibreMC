@@ -31,8 +31,35 @@ class TeleportRequest(
     }
 
     fun apply() {
-        if (inverted) target.teleport(source.serverWorld, source.x, source.y, source.z, source.yaw, source.pitch)
-        source.teleport(target.serverWorld, target.x, target.y, target.z, target.yaw, target.pitch)
+        if (inverted) {
+            PlayerDataManager.setBackPos(
+                target.uuid, Pos( 
+                    world = target.world.registryKey.value,
+    
+                    x = target.x,
+                    y = target.y,
+                    z = target.z,
+    
+                    yaw = target.yaw,
+                    pitch = target.pitch
+                )
+            )
+            target.teleport(source.serverWorld, source.x, source.y, source.z, source.yaw, source.pitch)
+        } else {
+            PlayerDataManager.setBackPos(
+                source.uuid, Pos( 
+                    world = source.world.registryKey.value,
+    
+                    x = source.x,
+                    y = source.y,
+                    z = source.z,
+    
+                    yaw = source.yaw,
+                    pitch = source.pitch
+                )
+            )
+            source.teleport(target.serverWorld, target.x, target.y, target.z, target.yaw, target.pitch)
+        }
     }
 
     fun notifySourceOfAccept() {
