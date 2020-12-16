@@ -9,6 +9,7 @@ import me.gserv.fabrikommander.utils.darkPurple
 import me.gserv.fabrikommander.utils.red
 import me.gserv.fabrikommander.utils.gray
 import me.gserv.fabrikommander.utils.yellow
+import me.gserv.fabrikommander.utils.reset
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.server.command.CommandManager.argument
 import net.minecraft.server.command.CommandManager.literal
@@ -31,7 +32,7 @@ class TpaCommand(val dispatcher: Dispatcher) {
         request.notifyTargetOfRequest()
         context.source.sendFeedback(
             messageHeader + 
-            darkPurple("Teleport request sent to ") + aqua(target.displayName),
+            darkPurple("Teleport request sent to ") + aqua(target.displayName.asString()),
             true
         )
         return 1

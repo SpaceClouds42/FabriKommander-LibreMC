@@ -9,6 +9,7 @@ import me.gserv.fabrikommander.utils.darkPurple
 import me.gserv.fabrikommander.utils.red
 import me.gserv.fabrikommander.utils.gray
 import me.gserv.fabrikommander.utils.yellow
+import me.gserv.fabrikommander.utils.reset
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.server.command.CommandManager.argument
 import net.minecraft.server.command.CommandManager.literal
@@ -29,7 +30,7 @@ class TpCancelCommand(val dispatcher: Dispatcher) {
         if (TeleportRequest.ACTIVE_REQUESTS[context.source.player.uuidAsString + target.uuidAsString] == null) {
             context.source.sendError(
                 messageHeader + 
-                red("No active teleport request to ") + aqua(target.displayName)
+                red("No active teleport request to ") + aqua(target.displayName.asString())
             )
             return 0
         }
@@ -38,7 +39,7 @@ class TpCancelCommand(val dispatcher: Dispatcher) {
         context.source.sendFeedback(
             messageHeader +     
             darkPurple("Teleport request to ") + 
-            aqua(target.displayName) + 
+            aqua(target.displayName.asString()) + 
             darkPurple(" was cancelled."), 
             true
         )

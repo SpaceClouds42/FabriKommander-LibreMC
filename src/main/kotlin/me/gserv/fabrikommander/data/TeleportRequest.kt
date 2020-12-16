@@ -1,5 +1,6 @@
 package me.gserv.fabrikommander.data
 
+import me.gserv.fabrikommander.data.spec.Pos
 import me.gserv.fabrikommander.utils.aqua
 import me.gserv.fabrikommander.utils.click
 import me.gserv.fabrikommander.utils.green
@@ -111,12 +112,12 @@ class TeleportRequest(
     }
 
     fun notifySourceOfAccept() {
-        val message = aqua(target.displayName) + darkPurple(" has accepted your teleport request")
+        val message = aqua(target.displayName.asString()) + darkPurple(" has accepted your teleport request")
         source.sendSystemMessage(message, Util.NIL_UUID)
     }
 
     fun notifySourceOfDeny() {
-        val message = messageHeader + aqua(target.displayName) + darkPurple(" has denied your teleport request")
+        val message = messageHeader + aqua(target.displayName.asString()) + darkPurple(" has denied your teleport request")
         source.sendSystemMessage(message, Util.NIL_UUID)
     }
 
@@ -131,7 +132,7 @@ class TeleportRequest(
     }
 
     fun notifyTargetOfCancel() {
-        val message = messageHeader + aqua(source.displayName) + darkPurple(" has cancelled their teleport request")
+        val message = messageHeader + aqua(source.displayName.asString()) + darkPurple(" has cancelled their teleport request")
         target.sendSystemMessage(message, Util.NIL_UUID)
     }
 }

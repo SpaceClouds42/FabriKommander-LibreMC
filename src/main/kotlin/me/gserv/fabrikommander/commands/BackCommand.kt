@@ -26,7 +26,8 @@ class BackCommand(val dispatcher: Dispatcher) {
         // Also, apparently functions inside companion objects are automatically static, neat!
         fun sendDeathMessage(p: PlayerEntity) {
             p.sendMessage(
-                backHeader + gold("Use /back to get back to your death location."),
+                gray("[") + yellow("Back") + gray("] ") + reset("") + 
+                gold("Use /back to get back to your death location."),
                 false
             )
         }
