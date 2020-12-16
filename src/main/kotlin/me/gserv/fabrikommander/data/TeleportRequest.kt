@@ -8,6 +8,7 @@ import me.gserv.fabrikommander.utils.plus
 import me.gserv.fabrikommander.utils.red
 import me.gserv.fabrikommander.utils.reset
 import me.gserv.fabrikommander.utils.yellow
+import me.gserv.fabrikommander.data.spec.Pos
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
@@ -81,9 +82,9 @@ class TeleportRequest(
                     true -> "you teleport to them"
                     false -> "to teleport to you"
                 }
-            ) + reset(". [") + click(
+            ) + reset(". ") + click(
                 hover(
-                    aqua("Accept"),
+                    green("[✓]"),
                     HoverEvent(
                         HoverEvent.Action.SHOW_TEXT,
                         green("Click here to accept the request.")
@@ -93,9 +94,9 @@ class TeleportRequest(
                     ClickEvent.Action.RUN_COMMAND,
                     "/tpaccept " + source.entityName // There can be multiple active requests
                 )
-            ) + reset(" / ") + hover(
+            ) + reset(" ") + hover(
                 click(
-                    aqua("Deny"),
+                    red("[X]"),
                     ClickEvent(
                         ClickEvent.Action.RUN_COMMAND,
                         "/tpdeny " + source.entityName // There can be multiple active requests
@@ -105,7 +106,7 @@ class TeleportRequest(
                     HoverEvent.Action.SHOW_TEXT,
                     red("Click here to deny the request.")
                 )
-            ) + reset("]")
+            ) + reset("")
 
         target.sendSystemMessage(message, Util.NIL_UUID)
     }
