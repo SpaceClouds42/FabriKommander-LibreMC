@@ -9,6 +9,7 @@ import me.gserv.fabrikommander.utils.plus
 import me.gserv.fabrikommander.utils.red
 import me.gserv.fabrikommander.utils.reset
 import me.gserv.fabrikommander.utils.yellow
+import me.gserv.fabrikommander.data.spec.Pos
 import me.gserv.fabrikommander.utils.darkPurple
 import me.gserv.fabrikommander.utils.gray
 import net.minecraft.server.network.ServerPlayerEntity
@@ -22,6 +23,7 @@ class TeleportRequest(
     val target: ServerPlayerEntity,
     val inverted: Boolean
 ) {
+    /*
     val messageHeader = gray("[") + yellow("TPA") + gray("] ") + reset("")
 
     val tpaMessage = aqua(source.entityName) + darkPurple(" has requested to teleport to you") + reset(" ")
@@ -67,7 +69,7 @@ class TeleportRequest(
                             "/tpdeny " + source.entityName // There can be multiple active requests
                     )
                 ) + reset("")
-
+    */
     companion object {
         @JvmStatic
         val ACTIVE_REQUESTS = hashMapOf<String, TeleportRequest>()
@@ -123,10 +125,37 @@ class TeleportRequest(
 
     fun notifyTargetOfRequest() {
         // Message will be configurable later
-        val message = when (inverted) {
-            true -> messageHeader + tpaMessageInverted + acceptInverted + deny
-            false -> messageHeader + tpaMessage + accept + deny
-        }
+        val message =
+            reset("") + source.displayName as MutableText + yellow( // reset("") used to make the vanilla click event for player names not apply to the whole message
+                " has requested " + when (inverted) {
+                    true -> "you teleport to them"
+                    false -> "to teleport to you"
+                }
+            ) + reset(". ") + click(
+                hover(
+                    green("[✓]"),
+                    HoverEvent(
+                        HoverEvent.Action.SHOW_TEXT,
+                        green("Click here to accept the request.")
+                    )
+                ),
+                ClickEvent(
+                    ClickEvent.Action.RUN_COMMAND,
+                    "/tpaccept " + source.entityName // There can be multiple active requests
+                )
+            ) + reset(" ") + hover(
+                click(
+                    red("[X]"),
+                    ClickEvent(
+                        ClickEvent.Action.RUN_COMMAND,
+                        "/tpdeny " + source.entityName // There can be multiple active requests
+                    )
+                ),
+                HoverEvent(
+                    HoverEvent.Action.SHOW_TEXT,
+                    red("Click here to deny the request.")
+                )
+            ) + reset("")
 
         target.sendSystemMessage(message, Util.NIL_UUID)
     }
