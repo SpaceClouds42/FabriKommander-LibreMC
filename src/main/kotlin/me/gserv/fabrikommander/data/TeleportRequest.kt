@@ -1,5 +1,6 @@
 package me.gserv.fabrikommander.data
 
+import me.gserv.fabrikommander.data.spec.Pos
 import me.gserv.fabrikommander.utils.aqua
 import me.gserv.fabrikommander.utils.click
 import me.gserv.fabrikommander.utils.green
@@ -9,6 +10,8 @@ import me.gserv.fabrikommander.utils.red
 import me.gserv.fabrikommander.utils.reset
 import me.gserv.fabrikommander.utils.yellow
 import me.gserv.fabrikommander.data.spec.Pos
+import me.gserv.fabrikommander.utils.darkPurple
+import me.gserv.fabrikommander.utils.gray
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
@@ -20,6 +23,53 @@ class TeleportRequest(
     val target: ServerPlayerEntity,
     val inverted: Boolean
 ) {
+    /*
+    val messageHeader = gray("[") + yellow("TPA") + gray("] ") + reset("")
+
+    val tpaMessage = aqua(source.entityName) + darkPurple(" has requested to teleport to you") + reset(" ")
+    val tpaMessageInverted = aqua(source.entityName) + darkPurple(" has requested you teleport to them") + reset(" ")
+    
+    val accept = click(
+                    hover(
+                        green("[✓]"),
+                        HoverEvent(
+                            HoverEvent.Action.SHOW_TEXT,
+                            reset("Teleport ") + aqua(source.entityName) + reset(" to you")
+                        )
+                    ),
+                    ClickEvent(
+                            ClickEvent.Action.RUN_COMMAND,
+                            "/tpaccept " + source.entityName // There can be multiple active requests
+                    )
+                ) + reset("")
+    val acceptInverted = click(
+                    hover(
+                        green("[✓]"),
+                        HoverEvent(
+                            HoverEvent.Action.SHOW_TEXT,
+                            reset("Teleport to ") + aqua(source.entityName) + reset("")
+                        )
+                    ),
+                    ClickEvent(
+                            ClickEvent.Action.RUN_COMMAND,
+                            "/tpaccept " + source.entityName // There can be multiple active requests
+                    )
+                ) + reset("")
+                
+    val deny = click(
+                    hover(
+                        red("[X]"),
+                        HoverEvent(
+                            HoverEvent.Action.SHOW_TEXT,
+                            reset("Deny TPA request from ") + aqua(source.entityName) + reset("")
+                        )
+                    ),
+                    ClickEvent(
+                            ClickEvent.Action.RUN_COMMAND,
+                            "/tpdeny " + source.entityName // There can be multiple active requests
+                    )
+                ) + reset("")
+    */
     companion object {
         @JvmStatic
         val ACTIVE_REQUESTS = hashMapOf<String, TeleportRequest>()
@@ -64,13 +114,12 @@ class TeleportRequest(
     }
 
     fun notifySourceOfAccept() {
-        val message =
-            reset("") + target.displayName + aqua(" has accepted your teleport request")
+        val message = aqua(target.displayName.asString()) + darkPurple(" has accepted your teleport request")
         source.sendSystemMessage(message, Util.NIL_UUID)
     }
 
     fun notifySourceOfDeny() {
-        val message = reset("") + target.displayName + aqua(" has denied your teleport request")
+        val message = messageHeader + aqua(target.displayName.asString()) + darkPurple(" has denied your teleport request")
         source.sendSystemMessage(message, Util.NIL_UUID)
     }
 
@@ -112,7 +161,7 @@ class TeleportRequest(
     }
 
     fun notifyTargetOfCancel() {
-        val message = reset("") + source.displayName + aqua(" has cancelled their teleport request.")
+        val message = messageHeader + aqua(source.displayName.asString()) + darkPurple(" has cancelled their teleport request")
         target.sendSystemMessage(message, Util.NIL_UUID)
     }
 }
