@@ -32,7 +32,7 @@ class TpAcceptCommand(val dispatcher: Dispatcher) {
         if (request == null) {
             context.source.sendError(
                 messageHeader + 
-                red("No active teleport request from ") + aqua(source.displayName.asString())
+                red("No active teleport request from ") + aqua(source.entityName)
             )
             return 0
         }

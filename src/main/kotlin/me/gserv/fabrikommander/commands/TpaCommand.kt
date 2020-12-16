@@ -32,7 +32,7 @@ class TpaCommand(val dispatcher: Dispatcher) {
         request.notifyTargetOfRequest()
         context.source.sendFeedback(
             messageHeader + 
-            darkPurple("Teleport request sent to ") + aqua(target.displayName.asString()),
+            darkPurple("Teleport request sent to ") + aqua(target.entityName),
             true
         )
         return 1
