@@ -15,8 +15,6 @@ import net.minecraft.server.command.CommandManager.argument
 import net.minecraft.server.command.CommandManager.literal
 
 class TpCancelCommand(val dispatcher: Dispatcher) {
-    val messageHeader = gray("[") + yellow("TPA") + gray("] ") + reset("")
-
     fun register() {
         dispatcher.register(
             literal("tpcancel").then(
@@ -27,6 +25,7 @@ class TpCancelCommand(val dispatcher: Dispatcher) {
 
     fun tpCancelCommand(context: Context): Int {
         val target = EntityArgumentType.getPlayer(context, "target")
+        val messageHeader = gray("[") + yellow("TPA") + gray("] ") + reset("")
         if (TeleportRequest.ACTIVE_REQUESTS[context.source.player.uuidAsString + target.uuidAsString] == null) {
             context.source.sendError(
                 messageHeader + 
