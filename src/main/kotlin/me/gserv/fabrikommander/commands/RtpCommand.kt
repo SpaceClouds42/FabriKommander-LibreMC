@@ -55,9 +55,8 @@ class RtpCommand(val dispatcher: Dispatcher) {
 
     fun rtpCommand(context: Context): Int {
         val player = context.source.player
-        val overworld = Identifier("minecraft:overworld")
-        val world = player.server.getWorld(RegistryKey.of(Registry.DIMENSION, overworld))
-        val coordinates = generateCoordinates(world)
+        val overworld = player.server.getWorld(RegistryKey.of(Registry.DIMENSION, Identifier("minecraft:overworld")))
+        val coordinates = generateCoordinates(overworld)
 
         PlayerDataManager.setBackPos(
             player.uuid,
@@ -72,7 +71,7 @@ class RtpCommand(val dispatcher: Dispatcher) {
         )
 
         player.teleport(
-            world,
+            overworld,
             coordinates[0].toDouble(),
             coordinates[1].toDouble(),
             coordinates[2].toDouble(),
