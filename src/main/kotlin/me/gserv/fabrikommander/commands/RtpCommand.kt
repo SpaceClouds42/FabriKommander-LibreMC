@@ -39,7 +39,7 @@ class RtpCommand(val dispatcher: Dispatcher) {
             return generateCoordinates(world)
         }
 
-        return listOf(x, y, z)
+        return listOf(x, y + 1, z)
     }
 
     private fun getHighestBlock(world: ServerWorld?, x: Int, z: Int): Int {
