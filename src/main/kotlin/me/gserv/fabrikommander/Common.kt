@@ -36,6 +36,7 @@ object Common : ModInitializer {
         
         // Teleport commands
         BackCommand(dispatcher).register()
+        RtpCommand(dispatcher).register()
 
         // Misc commands
         PingCommand(dispatcher).register()
