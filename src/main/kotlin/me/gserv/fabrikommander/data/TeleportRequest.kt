@@ -22,8 +22,7 @@ class TeleportRequest(
     val target: ServerPlayerEntity,
     val inverted: Boolean
 ) {
-    val messageHeader = gray("[") + yellow("TPA") + gray("] ") + reset("")
-
+    /*
     val tpaMessage = aqua(source.entityName) + darkPurple(" has requested to teleport to you") + reset(" ")
     val tpaMessageInverted = aqua(source.entityName) + darkPurple(" has requested you teleport to them") + reset(" ")
     
@@ -67,7 +66,7 @@ class TeleportRequest(
                             "/tpdeny " + source.entityName // There can be multiple active requests
                     )
                 ) + reset("")
-
+    */
     companion object {
         @JvmStatic
         val ACTIVE_REQUESTS = hashMapOf<String, TeleportRequest>()
@@ -112,27 +111,59 @@ class TeleportRequest(
     }
 
     fun notifySourceOfAccept() {
-        val message = aqua(target.displayName.asString()) + darkPurple(" has accepted your teleport request")
+        val message = aqua(target.entityName) + darkPurple(" has accepted your teleport request")
         source.sendSystemMessage(message, Util.NIL_UUID)
     }
 
     fun notifySourceOfDeny() {
-        val message = messageHeader + aqua(target.displayName.asString()) + darkPurple(" has denied your teleport request")
+        val message = 
+        gray("[") + yellow("TPA") + gray("] ") + reset("") + 
+        aqua(target.entityName) + darkPurple(" has denied your teleport request")
         source.sendSystemMessage(message, Util.NIL_UUID)
     }
 
     fun notifyTargetOfRequest() {
         // Message will be configurable later
-        val message = when (inverted) {
-            true -> messageHeader + tpaMessageInverted + acceptInverted + deny
-            false -> messageHeader + tpaMessage + accept + deny
-        }
+        val message =
+            gray("[") + yellow("TPA") + gray("] ") + reset("") + 
+            source.displayName as MutableText + yellow( // reset("") used to make the vanilla click event for player names not apply to the whole message
+                " has requested " + when (inverted) {
+                    true -> "you teleport to them"
+                    false -> "to teleport to you"
+                }
+            ) + reset(". ") + click(
+                hover(
+                    green("[✓]"),
+                    HoverEvent(
+                        HoverEvent.Action.SHOW_TEXT,
+                        green("Click here to accept the request.")
+                    )
+                ),
+                ClickEvent(
+                    ClickEvent.Action.RUN_COMMAND,
+                    "/tpaccept " + source.entityName // There can be multiple active requests
+                )
+            ) + reset(" ") + hover(
+                click(
+                    red("[X]"),
+                    ClickEvent(
+                        ClickEvent.Action.RUN_COMMAND,
+                        "/tpdeny " + source.entityName // There can be multiple active requests
+                    )
+                ),
+                HoverEvent(
+                    HoverEvent.Action.SHOW_TEXT,
+                    red("Click here to deny the request.")
+                )
+            ) + reset("")
 
         target.sendSystemMessage(message, Util.NIL_UUID)
     }
 
     fun notifyTargetOfCancel() {
-        val message = messageHeader + aqua(source.displayName.asString()) + darkPurple(" has cancelled their teleport request")
+        val message =
+            gray("[") + yellow("TPA") + gray("] ") + reset("") + 
+            aqua(source.entityName) + darkPurple(" has cancelled their teleport request")
         target.sendSystemMessage(message, Util.NIL_UUID)
     }
 }

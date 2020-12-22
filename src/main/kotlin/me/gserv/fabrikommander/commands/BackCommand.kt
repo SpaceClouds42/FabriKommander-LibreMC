@@ -14,13 +14,13 @@ import me.gserv.fabrikommander.utils.identifierToWorldName
 import me.gserv.fabrikommander.utils.plus
 import me.gserv.fabrikommander.utils.red
 import me.gserv.fabrikommander.utils.yellow
+import net.minecraft.util.Util
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.server.command.CommandManager.literal
 import net.minecraft.util.registry.Registry
 import net.minecraft.util.registry.RegistryKey
 
 class BackCommand(val dispatcher: Dispatcher) {
-    val backHeader = gray("[") + yellow("Back") + gray("] ") + reset("")
     companion object Utils {
         // Mixin had a problem with @Shadow-ing sendMessage so I'm doing it here
         // Also, apparently functions inside companion objects are automatically static, neat!
@@ -41,6 +41,7 @@ class BackCommand(val dispatcher: Dispatcher) {
 
     fun backCommand(context: Context): Int {
         val player = context.source.player
+        val backHeader = gray("[") + yellow("Back") + gray("] ") + reset("")
         if (PlayerDataManager.getBackPos(player.uuid) == null) {
             context.source.sendError(
                 backHeader + red("No last position defined - you will have to teleport.")
@@ -74,7 +75,8 @@ class BackCommand(val dispatcher: Dispatcher) {
         )
         player.teleport(world, pos.x, pos.y, pos.z, pos.yaw, pos.pitch)
         context.source.sendFeedback(
-            backHeader + gold("Successfully teleported back!"),
+            backHeader + gold("Successfully teleported back to ") +
+            aqua("[${pos.x.toInt()}, ${pos.y.toInt()}, ${pos.z.toInt()}]"),
             false
         )
         return 1

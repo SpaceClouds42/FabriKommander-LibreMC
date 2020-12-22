@@ -16,8 +16,6 @@ import net.minecraft.server.command.CommandManager.literal
 
 // I'm not sure how I should capitalise this
 class TpAcceptCommand(val dispatcher: Dispatcher) {
-    val messageHeader = gray("[") + yellow("TPA") + gray("] ") + reset("")
-
     fun register() {
         dispatcher.register(
             literal("tpaccept").then(
@@ -29,10 +27,11 @@ class TpAcceptCommand(val dispatcher: Dispatcher) {
     fun tpAcceptCommand(context: Context): Int {
         val source = EntityArgumentType.getPlayer(context, "source")
         val request = TeleportRequest.ACTIVE_REQUESTS[source.uuidAsString + context.source.player.uuidAsString]
+        val messageHeader = gray("[") + yellow("TPA") + gray("] ") + reset("")
         if (request == null) {
             context.source.sendError(
                 messageHeader + 
-                red("No active teleport request from ") + aqua(source.displayName.asString())
+                red("No active teleport request from ") + aqua(source.entityName)
             )
             return 0
         }
