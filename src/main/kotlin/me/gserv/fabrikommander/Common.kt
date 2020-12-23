@@ -43,8 +43,12 @@ object Common : ModInitializer {
         SetSpawnCommand(dispatcher).register()
 
         // Misc commands
-        PingCommand(dispatcher).register()
         DieCommand(dispatcher).register()
+
+        // Text commands
+        PingCommand(dispatcher).register()
         DiscordCommand(dispatcher).register()
+        RulesCommand(dispatcher).register()
+        InfoCommand(dispatcher).register()
     }
 }
