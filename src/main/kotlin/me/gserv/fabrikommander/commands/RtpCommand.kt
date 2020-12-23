@@ -15,22 +15,32 @@ import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.registry.Registry
 import net.minecraft.util.registry.RegistryKey
 import net.minecraft.util.math.BlockPos
+import com.mojang.brigadier.tree.LiteralCommandNode
+import net.minecraft.server.command.ServerCommandSource
+import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.tree.CommandNode
+
 
 class RtpCommand(val dispatcher: Dispatcher) {
     private val rtpRange = -5000..5000
 
+
     fun register() {
-        dispatcher.register(
-            CommandManager.literal("rtp")
-                .executes { rtpCommand(it) }
-        )
+        val node = registerMain()
         dispatcher.register(
             CommandManager.literal("wild")
+                .redirect(node)
+        )
+    }
+
+    fun registerMain(): LiteralCommandNode<ServerCommandSource> {
+        return dispatcher.register(
+            CommandManager.literal("rtp")
                 .executes { rtpCommand(it) }
         )
     }
     
-    private fun generateCoordinates(world: ServerWorld?): List<Int> {
+    private fun generateCoordinates(world: ServerWorld?): List<Double> {
         val x = rtpRange.random()
         val z = rtpRange.random()
         val y = getHighestBlock(world, x, z)
@@ -39,7 +49,7 @@ class RtpCommand(val dispatcher: Dispatcher) {
             return generateCoordinates(world)
         }
 
-        return listOf(x, y + 1, z)
+        return listOf(x + 0.5, y + 1.0, z + 0.5)
     }
 
     private fun getHighestBlock(world: ServerWorld?, x: Int, z: Int): Int {
@@ -72,9 +82,9 @@ class RtpCommand(val dispatcher: Dispatcher) {
 
         player.teleport(
             overworld,
-            coordinates[0].toDouble(),
-            coordinates[1].toDouble(),
-            coordinates[2].toDouble(),
+            coordinates[0],
+            coordinates[1],
+            coordinates[2],
             player.yaw,
             player.pitch
         )

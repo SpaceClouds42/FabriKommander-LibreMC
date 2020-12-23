@@ -45,5 +45,6 @@ object Common : ModInitializer {
         // Misc commands
         PingCommand(dispatcher).register()
         DieCommand(dispatcher).register()
+        DiscordCommand(dispatcher).register()
     }
 }
