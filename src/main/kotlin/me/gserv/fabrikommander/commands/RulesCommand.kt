@@ -9,11 +9,11 @@ class RulesCommand(val dispatcher: Dispatcher) {
     fun register() {
         dispatcher.register(
             CommandManager.literal("rules")
-                .executes { discordCommand(it) }
+                .executes { rulesCommand(it) }
         )
     }
 
-    fun discordCommand(context: Context): Int {
+    fun rulesCommand(context: Context): Int {
         val rule1 = hover(
             darkAqua("1. No hacking of any kind."),
             HoverEvent(
