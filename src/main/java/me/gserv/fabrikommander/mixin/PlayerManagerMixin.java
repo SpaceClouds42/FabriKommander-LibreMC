@@ -8,6 +8,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.MutableText;
 import net.minecraft.util.Util;
 import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.registry.Registry;
@@ -16,7 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.server.PlayerStream;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -46,9 +47,16 @@ public class PlayerManagerMixin {
         if (isNewPlayer(player)) {
             Spawn spawn = SpawnDataManager.INSTANCE.getSpawn();
             ServerWorld spawnWorld = player.server.getWorld(RegistryKey.of(Registry.DIMENSION, spawn.getPos().getWorld()));
-            PlayerStream.all(player.getServer()).forEach(p->p.sendSystemMessage(green("this player is new"), Util.NIL_UUID));
+            MutableText welcomeMessage = blue("Welcome ").append(
+                    gray((MutableText) player.getDisplayName())
+            ).append(
+                    blue(" to ")
+            ).append(
+                    bold(aqua("LibreMC"))
+            );
+            PlayerLookup.all(player.getServer()).forEach(p->p.sendSystemMessage(welcomeMessage, Util.NIL_UUID));
             player.sendSystemMessage(
-                    blue("Welcome to LibreMC! Be sure to check the rules and info"),
+                    blue("Be sure to check the rules and info"),
                     Util.NIL_UUID
             );
             player.teleport(
