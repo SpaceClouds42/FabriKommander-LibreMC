@@ -4,11 +4,7 @@ import com.mojang.brigadier.arguments.StringArgumentType
 import me.gserv.fabrikommander.data.PlayerDataManager
 import me.gserv.fabrikommander.data.spec.Home
 import me.gserv.fabrikommander.data.spec.Pos
-import me.gserv.fabrikommander.utils.Context
-import me.gserv.fabrikommander.utils.Dispatcher
-import me.gserv.fabrikommander.utils.aqua
-import me.gserv.fabrikommander.utils.green
-import me.gserv.fabrikommander.utils.plus
+import me.gserv.fabrikommander.utils.*
 import net.minecraft.server.command.CommandManager
 
 class SetHomeCommand(val dispatcher: Dispatcher) {
@@ -21,6 +17,13 @@ class SetHomeCommand(val dispatcher: Dispatcher) {
                         .executes { setHomeCommand(it, StringArgumentType.getString(it, "name")) }
                 )
         )
+    }
+
+    fun isPlayerHomeLimitReached(context: Context): Boolean {
+        val player = context.source.player
+        val homes = PlayerDataManager.getHomes(player.uuid)
+        val homeCount = homes!!.size
+        return !(player.hasPermissionLevel(2) || homeCount < 3)
     }
 
     fun setHomeCommand(context: Context, name: String = "home"): Int {
@@ -39,12 +42,19 @@ class SetHomeCommand(val dispatcher: Dispatcher) {
             ),
         )
 
-        PlayerDataManager.setHome(player.uuid, home)
+        if (!isPlayerHomeLimitReached(context)) {
+            PlayerDataManager.setHome(player.uuid, home)
 
-        context.source.sendFeedback(
-            green("Home created: ") + aqua(name),
-            true
-        )
+            context.source.sendFeedback(
+                green("Home created: ") + aqua(name),
+                true
+            )
+        } else {
+            context.source.sendFeedback(
+                red("You already have 3 homes!"),
+                false
+            )
+        }
 
         return 1
     }
