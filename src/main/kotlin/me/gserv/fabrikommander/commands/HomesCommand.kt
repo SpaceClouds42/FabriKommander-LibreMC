@@ -85,7 +85,7 @@ class HomesCommand(val dispatcher: Dispatcher) {
                         if (context.source.entity is ServerPlayerEntity && player.uuid == context.source.player.uuid) {
                             ClickEvent(ClickEvent.Action.RUN_COMMAND, "/home ${element.value.name}")
                         } else {
-                            ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "Not implemented for other players yet.")
+                            ClickEvent(ClickEvent.Action.RUN_COMMAND, "/execute in ${element.value.pos.world} run tp @s ${element.value.pos.x} ${element.value.pos.y} ${element.value.pos.z} ${element.value.pos.yaw} ${element.value.pos.pitch}")
                         }
                     )
                 }
