@@ -1,20 +1,10 @@
 package me.gserv.fabrikommander.data
 
 import me.gserv.fabrikommander.data.spec.Pos
-import me.gserv.fabrikommander.utils.aqua
-import me.gserv.fabrikommander.utils.click
-import me.gserv.fabrikommander.utils.green
-import me.gserv.fabrikommander.utils.hover
-import me.gserv.fabrikommander.utils.plus
-import me.gserv.fabrikommander.utils.red
-import me.gserv.fabrikommander.utils.reset
-import me.gserv.fabrikommander.utils.yellow
-import me.gserv.fabrikommander.utils.darkPurple
-import me.gserv.fabrikommander.utils.gray
+import me.gserv.fabrikommander.utils.*
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
-import net.minecraft.text.MutableText
 import net.minecraft.util.Util
 
 class TeleportRequest(
@@ -111,7 +101,8 @@ class TeleportRequest(
     }
 
     fun notifySourceOfAccept() {
-        val message = target.displayName + reset("") + green(" has accepted your teleport request")
+        val message = gray("[") + yellow("TPA") + gray("] ") +
+                target.displayName + reset("") + green(" has accepted your teleport request")
         source.sendSystemMessage(message, Util.NIL_UUID)
     }
 
