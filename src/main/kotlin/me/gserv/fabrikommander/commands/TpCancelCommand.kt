@@ -30,7 +30,7 @@ class TpCancelCommand(val dispatcher: Dispatcher) {
         if (TeleportRequest.ACTIVE_REQUESTS[context.source.player.uuidAsString + target.uuidAsString] == null) {
             context.source.sendError(
                 messageHeader + 
-                red("No active teleport request to ") + target.displayName as MutableText
+                red("No active teleport request to ") + target.displayName
             )
             return 0
         }
@@ -39,7 +39,7 @@ class TpCancelCommand(val dispatcher: Dispatcher) {
         context.source.sendFeedback(
             messageHeader +     
             red("Teleport request to ") + reset("") +
-            target.displayName as MutableText +
+            target.displayName + reset("") +
             red(" was cancelled."),
             true
         )

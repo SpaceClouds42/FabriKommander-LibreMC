@@ -28,14 +28,16 @@ class TpDenyCommand(val dispatcher: Dispatcher) {
         val messageHeader = gray("[") + yellow("TPA") + gray("] ") + reset("")
         if (TeleportRequest.ACTIVE_REQUESTS[source.uuidAsString + context.source.player.uuidAsString] == null) {
             context.source.sendError(
-                messageHeader + red("No active teleport request from ") + aqua(source.entityName)
+                messageHeader + red("No active teleport request from ") + source.displayName
             )
             return 0
         }
         TeleportRequest.ACTIVE_REQUESTS[source.uuidAsString + context.source.player.uuidAsString]!!.notifySourceOfDeny()
         TeleportRequest.ACTIVE_REQUESTS.remove(source.uuidAsString + context.source.player.uuidAsString)
         context.source.sendFeedback(
-            messageHeader + darkPurple("Teleport request from ") + aqua(source.entityName) + darkPurple(" was denied"),
+            messageHeader + aqua("Teleport request from ") +
+                    source.displayName + reset("") +
+                    aqua(" was ") + red("denied"),
             true
         )
         return 1

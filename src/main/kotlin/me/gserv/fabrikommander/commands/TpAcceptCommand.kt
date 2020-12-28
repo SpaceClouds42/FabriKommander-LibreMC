@@ -1,15 +1,7 @@
 package me.gserv.fabrikommander.commands
 
 import me.gserv.fabrikommander.data.TeleportRequest
-import me.gserv.fabrikommander.utils.Context
-import me.gserv.fabrikommander.utils.Dispatcher
-import me.gserv.fabrikommander.utils.plus
-import me.gserv.fabrikommander.utils.aqua
-import me.gserv.fabrikommander.utils.darkPurple
-import me.gserv.fabrikommander.utils.red
-import me.gserv.fabrikommander.utils.gray
-import me.gserv.fabrikommander.utils.yellow
-import me.gserv.fabrikommander.utils.reset
+import me.gserv.fabrikommander.utils.*
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.server.command.CommandManager.argument
 import net.minecraft.server.command.CommandManager.literal
@@ -31,13 +23,19 @@ class TpAcceptCommand(val dispatcher: Dispatcher) {
         if (request == null) {
             context.source.sendError(
                 messageHeader + 
-                red("No active teleport request from ") + aqua(source.entityName)
+                red("No active teleport request from ") + source.displayName
             )
             return 0
         }
         request.apply()
         request.notifySourceOfAccept()
         TeleportRequest.ACTIVE_REQUESTS.remove(source.uuidAsString + context.source.player.uuidAsString)
+        context.source.sendFeedback(
+            messageHeader + aqua("Teleport request from ") +
+                    source.displayName + reset("") +
+                    aqua(" was ") + green("accepted"),
+            true
+        )
         return 1
     }
 }

@@ -111,22 +111,22 @@ class TeleportRequest(
     }
 
     fun notifySourceOfAccept() {
-        val message = target.displayName as MutableText + (yellow(" has accepted your teleport request"))
+        val message = target.displayName + reset("") + green(" has accepted your teleport request")
         source.sendSystemMessage(message, Util.NIL_UUID)
     }
 
     fun notifySourceOfDeny() {
         val message = 
-        gray("[") + yellow("TPA") + gray("] ") + reset("") + 
-        target.displayName as MutableText + (red(" has denied your teleport request"))
+        gray("[") + yellow("TPA") + gray("] ") +
+        target.displayName + reset("") + (red(" has denied your teleport request"))
         source.sendSystemMessage(message, Util.NIL_UUID)
     }
 
     fun notifyTargetOfRequest() {
         // Message will be configurable later
         val message =
-            gray("[") + yellow("TPA") + gray("] ") + reset("") + 
-            source.displayName as MutableText + aqua( // reset("") used to make the vanilla click event for player names not apply to the whole message
+            gray("[") + yellow("TPA") + gray("] ") +
+            source.displayName + reset("") + aqua( // reset("") used to make the vanilla click event for player names not apply to the whole message
                 " has requested " + when (inverted) {
                     true -> "you teleport to them"
                     false -> "to teleport to you"
@@ -162,8 +162,8 @@ class TeleportRequest(
 
     fun notifyTargetOfCancel() {
         val message =
-            gray("[") + yellow("TPA") + gray("] ") + reset("") + 
-            source.displayName as MutableText + red(" has cancelled their teleport request")
+            gray("[") + yellow("TPA") + gray("] ") +
+            source.displayName + reset("") + red(" has cancelled their teleport request")
         target.sendSystemMessage(message, Util.NIL_UUID)
     }
 }
