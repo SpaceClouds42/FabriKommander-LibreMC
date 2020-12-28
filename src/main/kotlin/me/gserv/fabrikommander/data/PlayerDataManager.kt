@@ -79,7 +79,7 @@ object PlayerDataManager {
             try {
                 // Trying to deserialize from the old format and use the extension function to convert to a new player
                 val oldString = playerFile.readText()
-                val newPlayer = Yaml.default.decodeFromString(OldPlayer.serializer(), oldString).tonNewPlayer()
+                val newPlayer = Yaml.default.decodeFromString(OldPlayer.serializer(), oldString).toNewPlayer()
                 // If we got to this line, it didn't fail
                 logger.warn("File " + playerFile.name + " was using the old format.")
                 // Returning the correct thing
@@ -114,6 +114,16 @@ object PlayerDataManager {
     fun getHome(uuid: UUID, name: String): Home? {
         return cache[uuid]?.homes
             ?.firstOrNull { it.name.equals(name, ignoreCase = true) }
+    }
+
+    fun getHomeLimit(uuid: UUID): Int? {
+        return cache[uuid]?.homeLimit
+    }
+
+    fun setHomeLimit(uuid: UUID, newHomeLimit: Int) {
+        cache[uuid]?.homeLimit = newHomeLimit
+
+        saveData(uuid)
     }
 
     fun setHome(uuid: UUID, home: Home): Boolean? {

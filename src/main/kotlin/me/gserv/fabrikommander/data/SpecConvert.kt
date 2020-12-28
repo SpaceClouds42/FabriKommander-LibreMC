@@ -20,11 +20,12 @@ fun OldHome.toNewHome() = Home(
     )
 )
 
-fun OldPlayer.tonNewPlayer(): Player {
+fun OldPlayer.toNewPlayer(): Player {
     return Player(
         name = this.name,
         homes = this.homes.map { it.toNewHome() }.toMutableList(),
-        backPos = null,
+        homeLimit = null,
+        backPos = null
     )
 }
 

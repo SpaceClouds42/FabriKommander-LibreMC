@@ -8,7 +8,7 @@ data class Player(
 
     val homes: MutableList<Home> = mutableListOf(),
 
-    //val homeLimit: Int = 3,
+    var homeLimit: Int? = null,
 
     var backPos: Pos? = null
 )
