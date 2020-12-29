@@ -12,9 +12,10 @@ class HomeLimitCommand(val dispatcher: Dispatcher) {
     fun register() {
         dispatcher.register(
             CommandManager.literal("homelimit")
-                .requires { it.hasPermissionLevel(2) }
+                .executes { homeLimitCommand(it, it.source.player) }
                 .then(
                     CommandManager.argument("player", EntityArgumentType.player())
+                        .requires { it.hasPermissionLevel(2) }
                         .executes { homeLimitCommand(it,
                             EntityArgumentType.getPlayer(it, "player")) }
                         .suggests { context, builder ->
@@ -51,18 +52,36 @@ class HomeLimitCommand(val dispatcher: Dispatcher) {
         if (homeLimit == null) {
             homeLimit = 3
         }
-        context.source.sendFeedback(
-            targetPlayer.displayName as MutableText + reset("") +
-            green(" has a limit of ") +
-            gold("$homeLimit") +
-            green(" homes, and is using ") +
-            gold("${PlayerDataManager.getHomes(targetPlayer.uuid)!!.size}") +
-            green(when (PlayerDataManager.getHomes(targetPlayer.uuid)!!.size == 1) {
-                true -> " home"
-                false -> " homes"
-            }),
-false
-        )
+        if (context.source.player != targetPlayer) {
+            context.source.sendFeedback(
+                targetPlayer.displayName as MutableText + reset("") +
+                        green(" has a limit of ") +
+                        gold("$homeLimit") +
+                        green(" homes, and is using ") +
+                        gold("${PlayerDataManager.getHomes(targetPlayer.uuid)!!.size}") +
+                        green(
+                            when (PlayerDataManager.getHomes(targetPlayer.uuid)!!.size == 1) {
+                                true -> " home"
+                                false -> " homes"
+                            }
+                        ),
+                false
+            )
+        } else {
+            context.source.sendFeedback(
+                        green(" You have a limit of ") +
+                        gold("$homeLimit") +
+                        green(" homes, and you have ") +
+                        gold("${PlayerDataManager.getHomes(targetPlayer.uuid)!!.size}") +
+                        green(
+                            when (PlayerDataManager.getHomes(targetPlayer.uuid)!!.size == 1) {
+                                true -> " home"
+                                false -> " homes"
+                            }
+                        ),
+                false
+            )
+        }
 
         return 1
     }
