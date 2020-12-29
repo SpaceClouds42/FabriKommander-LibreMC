@@ -5,6 +5,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 import com.mojang.brigadier.exceptions.CommandSyntaxException
 import net.minecraft.server.command.ServerCommandSource
 import com.mojang.brigadier.context.CommandContext
+import me.gserv.fabrikommander.data.PlayerDataManager
 
 
 @Throws(CommandSyntaxException::class)
@@ -16,6 +17,6 @@ fun requestPlayer(context: CommandContext<ServerCommandSource>, requestedProfile
         requestedPlayer = minecraftServer.playerManager.createPlayer(requestedProfile)
         minecraftServer.playerManager.loadPlayerData(requestedPlayer)
     }
-
+    PlayerDataManager.playerJoined(requestedPlayer!!)
     return requestedPlayer!!
 }
