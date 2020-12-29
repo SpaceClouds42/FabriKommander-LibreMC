@@ -26,16 +26,12 @@ class RtpCommand(val dispatcher: Dispatcher) {
 
 
     fun register() {
-        val node = registerMain()
+        dispatcher.register(
+            CommandManager.literal("rtp")
+                .executes { rtpCommand(it) }
+        )
         dispatcher.register(
             CommandManager.literal("wild")
-                .redirect(node)
-        )
-    }
-
-    fun registerMain(): LiteralCommandNode<ServerCommandSource> {
-        return dispatcher.register(
-            CommandManager.literal("rtp")
                 .executes { rtpCommand(it) }
         )
     }
