@@ -3,6 +3,7 @@ package me.gserv.fabrikommander.commands
 import me.gserv.fabrikommander.data.PlayerDataManager
 import me.gserv.fabrikommander.utils.*
 import net.minecraft.command.argument.EntityArgumentType
+import net.minecraft.command.argument.GameProfileArgumentType
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.ClickEvent
@@ -17,9 +18,9 @@ class HomesCommand(val dispatcher: Dispatcher) {
             CommandManager.literal("homes")
                 .executes { homesCommand(it, it.source.player) }
                 .then(
-                    CommandManager.argument("player", EntityArgumentType.player())
+                    CommandManager.argument("player", GameProfileArgumentType.gameProfile())
                         .requires { it.hasPermissionLevel(2) }
-                        .executes { homesCommand(it, EntityArgumentType.getPlayer(it, "player")) }
+                        .executes { homesCommand(it, requestPlayer(it, GameProfileArgumentType.getProfileArgument(it, "player").iterator().next())) }
                         .suggests { context, builder ->
                             context.source.minecraftServer.playerNames.forEach(builder::suggest)
 
@@ -41,7 +42,7 @@ class HomesCommand(val dispatcher: Dispatcher) {
             var text = green("Homes: ")
 
             for (element in homes.withIndex()) {
-                val world = player.server.getWorld(RegistryKey.of(Registry.DIMENSION, element.value.pos.world))
+                val world = context.source.minecraftServer.getWorld(RegistryKey.of(Registry.DIMENSION, element.value.pos.world))
 
                 if (world == null) {
                     text += hover(
@@ -58,18 +59,6 @@ class HomesCommand(val dispatcher: Dispatcher) {
                     )
                 } else {
                     text += click(
-                        if (element.value.pos.world == player.serverWorld.registryKey.value) {
-                            hover(
-                                aqua(element.value.name),
-                                HoverEvent(
-                                    HoverEvent.Action.SHOW_TEXT,
-                                    white("This home is in: ") +
-                                            aqua(identifierToWorldName(element.value.pos.world)) +
-                                            white(".\n") +
-                                            yellow("Click to teleport!")
-                                )
-                            )
-                        } else {
                             hover(
                                 darkAqua(element.value.name),
                                 HoverEvent(
@@ -79,9 +68,7 @@ class HomesCommand(val dispatcher: Dispatcher) {
                                             white(".\n") +
                                             yellow("Click to teleport!")
                                 )
-                            )
-                        },
-
+                            ),
                         if (context.source.entity is ServerPlayerEntity && player.uuid == context.source.player.uuid) {
                             ClickEvent(ClickEvent.Action.RUN_COMMAND, "/home ${element.value.name}")
                         } else {
