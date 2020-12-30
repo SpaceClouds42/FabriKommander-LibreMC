@@ -7,10 +7,10 @@ import org.apache.logging.log4j.LogManager
 
 val ranks = listOf(
     "member",
-    "MVP",
-    "MVP+",
     "VIP",
     "VIP+",
+    "MVP",
+    "MVP+",
     "Helper",
     "Mod",
     "Dev",
@@ -19,10 +19,10 @@ val ranks = listOf(
 
 val rankToPermissionLevel = hashMapOf(
     "member" to 0,
-    "MVP" to 1,
-    "MVP+" to 2,
-    "VIP" to 3,
-    "VIP+" to 4,
+    "VIP" to 1,
+    "VIP+" to 2,
+    "MVP" to 3,
+    "MVP+" to 4,
     "Helper" to 5,
     "Mod" to 6,
     "Dev" to 7,
@@ -31,10 +31,10 @@ val rankToPermissionLevel = hashMapOf(
 
 val rankToHomeLimit = hashMapOf(
     "member" to 3,
-    "MVP" to 5,
-    "MVP+" to 8,
-    "VIP" to 12,
-    "VIP+" to 20,
+    "VIP" to 5,
+    "VIP+" to 8,
+    "MVP" to 12,
+    "MVP+" to 20,
     "Helper" to 8,
     "Mod" to 8,
     "Dev" to 8,
