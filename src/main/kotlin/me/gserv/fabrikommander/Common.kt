@@ -54,5 +54,6 @@ object Common : ModInitializer {
         RanksCommand(dispatcher).register()
 
         // Donor commands
+        RankCommand(dispatcher).register()
     }
 }

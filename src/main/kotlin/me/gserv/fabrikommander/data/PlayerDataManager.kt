@@ -120,6 +120,16 @@ object PlayerDataManager {
         return cache[uuid]?.homeLimit
     }
 
+    fun getRank(uuid: UUID): String? {
+        return cache[uuid]?.rank
+    }
+
+    fun setRank(uuid: UUID, newRank: String) {
+        cache[uuid]?.rank = newRank
+
+        saveData(uuid)
+    }
+
     fun setHomeLimit(uuid: UUID, newHomeLimit: Int) {
         cache[uuid]?.homeLimit = newHomeLimit
 
