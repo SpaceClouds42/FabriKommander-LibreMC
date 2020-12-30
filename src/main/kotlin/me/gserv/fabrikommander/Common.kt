@@ -28,7 +28,6 @@ object Common : ModInitializer {
         HomeCommand(dispatcher).register()
         HomesCommand(dispatcher).register()
         SetHomeCommand(dispatcher).register()
-        HomeLimitCommand(dispatcher).register()
 
         // TPA commands
         TpaCommand(dispatcher).register()

@@ -24,10 +24,10 @@ class SetHomeCommand(val dispatcher: Dispatcher) {
         val homes = PlayerDataManager.getHomes(player.uuid)
         val homeCount = homes!!.size
         var homeLimit = PlayerDataManager.getHomeLimit(player.uuid)
-        if (homeLimit == null) {
-            homeLimit = 3
+        if (homeLimit == 0) {
+            return false
         }
-        return !(homeCount < homeLimit  || player.hasPermissionLevel(2))
+        return (homeCount >= homeLimit!!)
     }
 
     fun setHomeCommand(context: Context, name: String = "home"): Int {
@@ -55,11 +55,9 @@ class SetHomeCommand(val dispatcher: Dispatcher) {
             )
         } else {
             var homeLimit = PlayerDataManager.getHomeLimit(player.uuid)
-            if (homeLimit == null) {
-                homeLimit = 3
-            }
+
             context.source.sendFeedback(
-                red("You already have ${homeLimit} homes!"),
+                red("You already have $homeLimit homes!"),
                 false
             )
         }

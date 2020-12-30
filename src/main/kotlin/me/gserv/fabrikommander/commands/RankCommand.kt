@@ -8,16 +8,6 @@ import net.minecraft.server.command.CommandManager
 import net.minecraft.server.network.ServerPlayerEntity
 
 class RankCommand(val dispatcher: Dispatcher) {
-    val rankHomeLimitMap = hashMapOf(
-        "member" to 3,
-        "MVP" to 5,
-        "MVP+" to 8,
-        "VIP" to 12,
-        "VIP+" to 20,
-        "Helper" to 8,
-        "Mod" to 8
-    )
-
     fun register() {
         dispatcher.register(
             CommandManager.literal("rank")
@@ -34,19 +24,19 @@ class RankCommand(val dispatcher: Dispatcher) {
                             builder.buildFuture()
                         }
                         .then(
-                            CommandManager.argument("newRank", StringArgumentType.string())
+                            CommandManager.argument("rank", StringArgumentType.string())
                                 .requires {
                                     it.hasPermissionLevel(2) ||
-                                    rankPermission[PlayerDataManager.getRank(it.player.uuid)]!! >= 5
+                                    hasRankPermissionLevel(it.player, "Helper")
                                 }
                                 .executes { rankCommand(
                                     it,
                                     requestPlayer(it, GameProfileArgumentType.getProfileArgument(it, "player").iterator().next()),
-                                    StringArgumentType.getString(it, "newRank")
+                                    StringArgumentType.getString(it, "rank")
                                 ) }
                                 .suggests { context, builder ->
-                                    rankPermission.forEach {
-                                        builder.suggest(it.key)
+                                    ranks.forEach {
+                                        builder.suggest(it)
                                     }
 
                                     builder.buildFuture()
@@ -58,13 +48,16 @@ class RankCommand(val dispatcher: Dispatcher) {
 
     // Staff command for setting ranks
     fun rankCommand(context: Context, targetPlayer: ServerPlayerEntity, newRank: String): Int {
-        if (rankPermission[newRank] == null) {
+        if (!ranks.contains(newRank)) {
             context.source.sendError(
                 red("Rank '$newRank' does not exist")
             )
 
             return 1
-        } else if (rankPermission[newRank]!! >= rankPermission[PlayerDataManager.getRank(context.source.player.uuid)]!!) {
+        } else if (
+            !context.source.player.hasPermissionLevel(2) && // Not /opped
+            rankToPermissionLevel[newRank]!! >= 5 // new rank is helper or higher (mod, dev, owner)
+        ) {
             context.source.sendError(
                 red("Your rank is not high enough to give the '$newRank' rank")
             )
@@ -79,14 +72,14 @@ class RankCommand(val dispatcher: Dispatcher) {
                     green(" the ") +
                     aqua(newRank) +
                     green(" rank"),
-            false
+            true
         )
 
-        HomeLimitCommand(dispatcher).homeLimitCommand(
-            context,
-            targetPlayer,
-            rankHomeLimitMap[newRank]!!
-        )
+        if (targetPlayer.hasPermissionLevel(2)) {
+            PlayerDataManager.setHomeLimit(targetPlayer.uuid, 0)
+        } else {
+            PlayerDataManager.setHomeLimit(targetPlayer.uuid, rankToHomeLimit[newRank]!!)
+        }
 
         return 1
     }
