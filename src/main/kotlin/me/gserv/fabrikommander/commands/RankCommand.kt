@@ -13,7 +13,9 @@ class RankCommand(val dispatcher: Dispatcher) {
         "MVP" to 5,
         "MVP+" to 8,
         "VIP" to 12,
-        "VIP+" to 20
+        "VIP+" to 20,
+        "Helper" to 8,
+        "Mod" to 8
     )
 
     fun register() {
@@ -33,14 +35,17 @@ class RankCommand(val dispatcher: Dispatcher) {
                         }
                         .then(
                             CommandManager.argument("newRank", StringArgumentType.string())
-                                .requires { it.hasPermissionLevel(2) }
+                                .requires {
+                                    it.hasPermissionLevel(2) ||
+                                    rankPermission[PlayerDataManager.getRank(it.player.uuid)]!! >= 5
+                                }
                                 .executes { rankCommand(
                                     it,
                                     requestPlayer(it, GameProfileArgumentType.getProfileArgument(it, "player").iterator().next()),
                                     StringArgumentType.getString(it, "newRank")
                                 ) }
                                 .suggests { context, builder ->
-                                    rankHomeLimitMap.forEach {
+                                    rankPermission.forEach {
                                         builder.suggest(it.key)
                                     }
 
@@ -53,9 +58,15 @@ class RankCommand(val dispatcher: Dispatcher) {
 
     // Staff command for setting ranks
     fun rankCommand(context: Context, targetPlayer: ServerPlayerEntity, newRank: String): Int {
-        if (rankHomeLimitMap[newRank] == null) {
+        if (rankPermission[newRank] == null) {
             context.source.sendError(
                 red("Rank '$newRank' does not exist")
+            )
+
+            return 1
+        } else if (rankPermission[newRank]!! >= rankPermission[PlayerDataManager.getRank(context.source.player.uuid)]!!) {
+            context.source.sendError(
+                red("Your rank is not high enough to give the '$newRank' rank")
             )
 
             return 1
