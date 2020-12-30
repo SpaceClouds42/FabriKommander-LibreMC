@@ -51,5 +51,8 @@ object Common : ModInitializer {
         DiscordCommand(dispatcher).register()
         RulesCommand(dispatcher).register()
         InfoCommand(dispatcher).register()
+        RanksCommand(dispatcher).register()
+
+        // Donor commands
     }
 }
