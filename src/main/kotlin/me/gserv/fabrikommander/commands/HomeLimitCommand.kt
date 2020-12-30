@@ -42,7 +42,7 @@ class HomeLimitCommand(val dispatcher: Dispatcher) {
 
         context.source.sendFeedback(
             green("Set home limit of player ") +
-                    aqua(targetPlayer.entityName) +
+                    targetPlayer.displayName +
                     green(" to ") +
                     gold("$newHomeLimit"),
             true
@@ -56,11 +56,12 @@ class HomeLimitCommand(val dispatcher: Dispatcher) {
         if (homeLimit == null) {
             homeLimit = 3
         }
-        if (context.source.entity is ServerPlayerEntity && context.source.player == targetPlayer) {
+        if (context.source.player != targetPlayer) {
             context.source.sendFeedback(
-                green(" You have a limit of ") +
+                targetPlayer.displayName as MutableText + reset("") +
+                        green(" has a limit of ") +
                         gold("$homeLimit") +
-                        green(" homes, and you have ") +
+                        green(" homes, and is using ") +
                         gold("${PlayerDataManager.getHomes(targetPlayer.uuid)!!.size}") +
                         green(
                             when (PlayerDataManager.getHomes(targetPlayer.uuid)!!.size == 1) {
@@ -72,10 +73,9 @@ class HomeLimitCommand(val dispatcher: Dispatcher) {
             )
         } else {
             context.source.sendFeedback(
-                targetPlayer.entityName as MutableText + reset("") +
-                        green(" has a limit of ") +
+                        green(" You have a limit of ") +
                         gold("$homeLimit") +
-                        green(" homes, and is using ") +
+                        green(" homes, and you have ") +
                         gold("${PlayerDataManager.getHomes(targetPlayer.uuid)!!.size}") +
                         green(
                             when (PlayerDataManager.getHomes(targetPlayer.uuid)!!.size == 1) {
