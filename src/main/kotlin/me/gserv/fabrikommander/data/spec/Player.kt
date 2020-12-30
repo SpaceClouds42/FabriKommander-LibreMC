@@ -10,5 +10,7 @@ data class Player(
 
     var homeLimit: Int? = null,
 
-    var backPos: Pos? = null
+    var backPos: Pos? = null,
+
+    var rank: String = "member"
 )
