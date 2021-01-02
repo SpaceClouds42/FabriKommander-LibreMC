@@ -13,6 +13,7 @@ class SetWarpCommand(val dispatcher: Dispatcher) {
             CommandManager.literal("setwarp")
                 .then(
                     CommandManager.argument("name", StringArgumentType.word())
+                        .requires { it.hasPermissionLevel(2) }
                         .executes { setWarpCommand(it, StringArgumentType.getString(it, "name")) }
                 )
         )

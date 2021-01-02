@@ -3,6 +3,7 @@ package me.gserv.fabrikommander
 import me.gserv.fabrikommander.commands.*
 import me.gserv.fabrikommander.data.PlayerDataManager
 import me.gserv.fabrikommander.data.SpawnDataManager
+import me.gserv.fabrikommander.data.WarpDataManager
 import me.gserv.fabrikommander.utils.Dispatcher
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback
@@ -15,6 +16,7 @@ object Common : ModInitializer {
     override fun onInitialize() {
         PlayerDataManager.setup()
         SpawnDataManager.setup()
+        WarpDataManager.setup()
 
         CommandRegistrationCallback.EVENT.register(::registerCommands)
     }
@@ -31,8 +33,8 @@ object Common : ModInitializer {
         SetHomeCommand(dispatcher).register()
 
         // Warp management commands
-        //DelWarpCommand(dispatcher).register()
-        //GetWarpCommand(dispatcher).register()
+        DelWarpCommand(dispatcher).register()
+        GetWarpCommand(dispatcher).register()
         SetWarpCommand(dispatcher).register()
         WarpCommand(dispatcher).register()
         WarpsCommand(dispatcher).register()

@@ -52,7 +52,8 @@ class WarpsCommand(val dispatcher: Dispatcher) {
                                 white("This warp is in: ") +
                                         darkAqua(identifierToWorldName(element.value.pos.world)) +
                                         white(".\n") +
-                                        yellow("Click to teleport!")
+                                        yellow("Click to teleport!") +
+                                        gray("Created by: ${element.value.createdBy}")
                             )
                         ),
                         ClickEvent(ClickEvent.Action.RUN_COMMAND, "/warp ${element.value.name}")
