@@ -17,11 +17,14 @@ object WarpDataManager {
     fun setup() {
         ServerLifecycleEvents.SERVER_STARTING.register {
             warps.clear()
+
             dataDir = it.getSavePath(WorldSavePath.ROOT).resolve("FabriKommander")
 
             dataDir.toFile().mkdir()
 
             logger.info("Data directory: $dataDir")
+
+            warps = loadData().warps
         }
 
         ServerLifecycleEvents.SERVER_STOPPING.register {
@@ -62,12 +65,12 @@ object WarpDataManager {
     }
 
     fun getWarps(): List<Warp>? {
-        return warps
+        return loadData().warps
     }
 
     fun getWarp(name: String): Warp? {
-        return warps
-            .firstOrNull { it.name.equals(name, ignoreCase = true) }
+        return getWarps()
+            ?.firstOrNull { it.name.equals(name, ignoreCase = true) }
     }
 
     fun setWarp(warp: Warp): Boolean? {
