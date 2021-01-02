@@ -43,6 +43,8 @@ class RtpCommand(val dispatcher: Dispatcher) {
 
         if (world?.isWater(BlockPos(x, y, z)) == true) {
             return generateCoordinates(world)
+        } else if (y == 0) {
+            return generateCoordinates(world)
         }
 
         return listOf(x + 0.5, y + 1.0, z + 0.5)

@@ -1,7 +1,6 @@
 package me.gserv.fabrikommander.data
 
 import com.charleskorn.kaml.Yaml
-import me.gserv.fabrikommander.data.spec.Player
 import me.gserv.fabrikommander.data.spec.Pos
 import me.gserv.fabrikommander.data.spec.Spawn
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents

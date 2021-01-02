@@ -59,7 +59,7 @@ class SetHomeCommand(val dispatcher: Dispatcher) {
                 homeLimit = 3
             }
             context.source.sendFeedback(
-                red("You already have ${homeLimit} homes!"),
+                red("You already have $homeLimit homes!"),
                 false
             )
         }

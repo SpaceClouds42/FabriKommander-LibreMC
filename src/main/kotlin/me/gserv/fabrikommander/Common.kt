@@ -26,9 +26,16 @@ object Common : ModInitializer {
         DelHomeCommand(dispatcher).register()
         GetHomeCommand(dispatcher).register()
         HomeCommand(dispatcher).register()
+        HomeLimitCommand(dispatcher).register()
         HomesCommand(dispatcher).register()
         SetHomeCommand(dispatcher).register()
-        HomeLimitCommand(dispatcher).register()
+
+        // Warp management commands
+        //DelWarpCommand(dispatcher).register()
+        //GetWarpCommand(dispatcher).register()
+        SetWarpCommand(dispatcher).register()
+        WarpCommand(dispatcher).register()
+        WarpsCommand(dispatcher).register()
 
         // TPA commands
         TpaCommand(dispatcher).register()

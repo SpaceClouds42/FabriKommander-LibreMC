@@ -37,11 +37,11 @@ class GetHomeCommand(val dispatcher: Dispatcher) {
             context.source.sendFeedback(
                 yellow("Home ") + aqua(name) + yellow(": [") +
                         green("World: ") + aqua(home.pos.world.toString()) + yellow(", ") +
-                        green("X: ") + aqua(home.pos.x.toString()) + yellow(", ") +
-                        green("Y: ") + aqua(home.pos.y.toString()) + yellow(", ") +
-                        green("Z: ") + aqua(home.pos.z.toString()) + yellow(", ") +
-                        green("Pitch: ") + aqua(home.pos.pitch.toString()) + yellow(", ") +
-                        green("Yaw: ") + aqua(home.pos.yaw.toString()) + yellow("]"),
+                        green("X: ") + aqua(home.pos.x.toInt().toString()) + yellow(", ") +
+                        green("Y: ") + aqua(home.pos.y.toInt().toString()) + yellow(", ") +
+                        green("Z: ") + aqua(home.pos.z.toInt().toString()) + yellow(", ") +
+                        green("Pitch: ") + aqua(home.pos.pitch.toInt().toString()) + yellow(", ") +
+                        green("Yaw: ") + aqua(home.pos.yaw.toInt().toString()) + yellow("]"),
                 false
             )
         }
