@@ -8,7 +8,7 @@ import net.minecraft.text.HoverEvent
 class VoteCommand(val dispatcher: Dispatcher) {
     fun register() {
         dispatcher.register(
-            CommandManager.literal("discord")
+            CommandManager.literal("vote")
                 .executes { discordCommand(it) }
         )
     }
