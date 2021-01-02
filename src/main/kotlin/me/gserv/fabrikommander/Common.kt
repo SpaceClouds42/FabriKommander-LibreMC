@@ -56,9 +56,10 @@ object Common : ModInitializer {
         DieCommand(dispatcher).register()
 
         // Text commands
-        PingCommand(dispatcher).register()
         DiscordCommand(dispatcher).register()
-        RulesCommand(dispatcher).register()
         InfoCommand(dispatcher).register()
+        PingCommand(dispatcher).register()
+        RulesCommand(dispatcher).register()
+        VoteCommand(dispatcher).register()
     }
 }
