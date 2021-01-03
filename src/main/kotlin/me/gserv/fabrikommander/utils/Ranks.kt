@@ -11,22 +11,19 @@ val ranks = listOf(
     "VIP+",
     "MVP",
     "MVP+",
+    "Builder",
     "Helper",
     "Mod",
     "Dev",
     "Owner"
 )
 
-val rankToPermissionLevel = hashMapOf(
-    "member" to 0,
-    "VIP" to 1,
-    "VIP+" to 2,
-    "MVP" to 3,
-    "MVP+" to 4,
-    "Helper" to 5,
-    "Mod" to 6,
-    "Dev" to 7,
-    "Owner" to 8
+val staffRanks = listOf(
+    "Builder",
+    "Helper",
+    "Mod",
+    "Dev",
+    "Owner"
 )
 
 val rankToHomeLimit = hashMapOf(
@@ -35,6 +32,7 @@ val rankToHomeLimit = hashMapOf(
     "VIP+" to 8,
     "MVP" to 12,
     "MVP+" to 20,
+    "Builder" to 8,
     "Helper" to 8,
     "Mod" to 8,
     "Dev" to 8,
@@ -45,9 +43,9 @@ val LOGGER = LogManager.getLogger("FabriKommander-LibreMC") as Logger
 
 
 fun hasRankPermissionLevel(player: ServerPlayerEntity, rank: String): Boolean {
-    if (rankToPermissionLevel[rank] == null) {
+    if (!ranks.contains(rank)) {
         LOGGER.info("ERROR: Ranks.kt; Rank '$rank' not found, a command or event must be checking for a rank permission level with the wrong rank name.")
         return false
     }
-    return rankToPermissionLevel[PlayerDataManager.getRank(player.uuid)]!! >= rankToPermissionLevel[rank]!!
+    return ranks.indexOf(PlayerDataManager.getRank(player.uuid)) >= ranks.indexOf(rank)
 }

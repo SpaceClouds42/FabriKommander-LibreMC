@@ -29,16 +29,16 @@ class RanksCommand(val dispatcher: Dispatcher) {
             )
         )
         val rank1 = green("$") + darkGray("5 ") +
-                gray("[") + gold("VIP") + gray("] ") +
+                gray("[") + darkGreen("VIP") + gray("] ") +
                 lightPurple("5 homes, more perks")
         val rank2 = green("$") + darkGray("10 ") +
-                gray("[") + gold("VIP") + green("+") + gray("] ") +
+                gray("[") + darkGreen("VIP") + green("+") + gray("] ") +
                 lightPurple("8 homes, more perks")
         val rank3 = green("$") + darkGray("15 ") +
-                gray("[") + darkGreen("MVP") + gray("] ") +
+                gray("[") + gold("MVP") + gray("] ") +
                 lightPurple("12 homes, more perks")
         val rank4 = green("$") + darkGray("20 ") +
-                gray("[") + darkGreen("MVP") + green("+") + gray("] ") +
+                gray("[") + gold("MVP") + green("+") + gray("] ") +
                 lightPurple("20 homes, more perks")
 
         context.source.player.sendSystemMessage(

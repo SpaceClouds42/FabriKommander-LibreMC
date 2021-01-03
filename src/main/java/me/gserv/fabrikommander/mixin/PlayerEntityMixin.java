@@ -24,6 +24,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     private void setBackPos(DamageSource source, CallbackInfo ci) {
         if (!world.isClient) {
             // We need a config, as some people wouldn't want this
+            System.out.println("lol you died");
             PlayerDataManager.INSTANCE.setBackPos(uuid, new Pos(
                     getX(),
                     getY(),

@@ -56,10 +56,10 @@ class RankCommand(val dispatcher: Dispatcher) {
             return 1
         } else if (
             !context.source.player.hasPermissionLevel(2) && // Not /opped
-            rankToPermissionLevel[newRank]!! >= 5 // new rank is helper or higher (mod, dev, owner)
+            newRank in staffRanks // new rank is staff rank
         ) {
             context.source.sendError(
-                red("Your rank is not high enough to give the '$newRank' rank")
+                red("You do not have permission to give the '$newRank' rank")
             )
 
             return 1
