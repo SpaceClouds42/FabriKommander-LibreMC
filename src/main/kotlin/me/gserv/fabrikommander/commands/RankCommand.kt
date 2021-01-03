@@ -81,6 +81,10 @@ class RankCommand(val dispatcher: Dispatcher) {
             PlayerDataManager.setHomeLimit(targetPlayer.uuid, rankToHomeLimit[newRank]!!)
         }
 
+        if (newRank !in staffRanks) {
+            PlayerDataManager.setInStaffChat(targetPlayer.uuid, false)
+        }
+
         return 1
     }
 
