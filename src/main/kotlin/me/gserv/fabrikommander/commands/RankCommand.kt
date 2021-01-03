@@ -6,6 +6,7 @@ import me.gserv.fabrikommander.utils.*
 import net.minecraft.command.argument.GameProfileArgumentType
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.util.Util
 
 class RankCommand(val dispatcher: Dispatcher) {
     fun register() {
@@ -83,6 +84,10 @@ class RankCommand(val dispatcher: Dispatcher) {
 
         if (newRank !in staffRanks) {
             PlayerDataManager.setInStaffChat(targetPlayer.uuid, false)
+            targetPlayer.sendSystemMessage(
+                gray("[") + yellow("Staff") + gray("] ") + red("Left Staff Chat"),
+                Util.NIL_UUID
+            )
         }
 
         return 1

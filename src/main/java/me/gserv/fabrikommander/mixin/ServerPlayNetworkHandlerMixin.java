@@ -27,13 +27,9 @@ public class ServerPlayNetworkHandlerMixin {
 
     @Inject(method = "onGameMessage", at = @At("HEAD"), cancellable = true)
     public void broadcastChatMessage(ChatMessageC2SPacket packet, CallbackInfo info) {
-        /* if (MuteCommand.isMuted(player.getUuidAsString())&&!Utils.hasPermission(player, "mute")) {
-            player.sendSystemMessage(new LiteralText("You were muted! Could not send message, contact a moderator if you feel this is a mistake"), Util.NIL_UUID);
-            info.cancel();
-        }
-        else */ if (PlayerDataManager.INSTANCE.isInStaffChat(player.getUuid()) && !packet.getChatMessage().startsWith("/")) {
+        if (PlayerDataManager.INSTANCE.isInStaffChat(player.getUuid()) && !packet.getChatMessage().startsWith("/")) {
             String message = packet.getChatMessage();
-            sendToStaffChat(
+            broadcastStaffMsg(
                     gray("[").append(
                             yellow("Staff")
                     ).append(
@@ -45,24 +41,20 @@ public class ServerPlayNetworkHandlerMixin {
                     ).append(
                             new LiteralText(message)
                     ),
-                    server
+                    server,
+                    message,
+                    player.getEntityName()
             );
             info.cancel();
         }
-        /* else if(ServerMuteCommand.isMuted()&&!Utils.hasPermission(player, "servermute")){
-            String serverMuted = "The server has been muted, please contact the moderators to unmute";
-            Text serverIsMuted = new LiteralText(String.format("%s %s", "§4", serverMuted));
-            player.sendSystemMessage(serverIsMuted, Util.NIL_UUID);
-            info.cancel();
-        } */
     }
 
-    private void sendToStaffChat(MutableText message, MinecraftServer server) {
+    private void broadcastStaffMsg(MutableText message, MinecraftServer server, String rawMessage, String sender) {
         server.getPlayerManager().getPlayerList().forEach(p -> {
             if (getStaffRanks().contains(PlayerDataManager.INSTANCE.getRank(p.getUuid()))) {
                 p.sendSystemMessage(message, Util.NIL_UUID);
             }
         });
-        System.out.println(message.toString());
+        System.out.println("[Staff] " + sender + " > " + rawMessage);
     }
 }
