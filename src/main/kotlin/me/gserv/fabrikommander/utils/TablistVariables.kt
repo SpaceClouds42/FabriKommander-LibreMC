@@ -3,22 +3,21 @@ package me.gserv.fabrikommander.utils
 import net.minecraft.server.MinecraftServer
 import java.lang.management.ManagementFactory
 import kotlin.math.floor
-import kotlin.math.round
 
 class TablistVariables {
     var mspt = 1.0
-    var tps = 1.0
+    private var tps = 1.0
 
 
     fun onTick(minecraftServer: MinecraftServer) {
-        mspt = round(minecraftServer.tickTime.toDouble() * 100) / 100
+        mspt = minecraftServer.tickTime.toDouble()
         if (mspt != 0.0) {
             tps = 1000 / mspt
         }
     }
 
     fun getTPS(): Double {
-        return round(tps.coerceAtMost(20.0) * 100) / 100
+        return tps.coerceAtMost(20.00)
     }
 
     fun getUptime(): String {
@@ -39,6 +38,10 @@ class TablistVariables {
             }
             s = s + (if (seconds < 10) "0" else "") + seconds
             return s
+    }
+
+    companion object {
+        val INSTANCE = TablistVariables()
     }
 }
 

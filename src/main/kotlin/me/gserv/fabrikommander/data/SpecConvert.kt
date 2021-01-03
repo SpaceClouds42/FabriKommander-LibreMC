@@ -26,7 +26,9 @@ fun OldPlayer.toNewPlayer(): Player {
         homes = this.homes.map { it.toNewHome() }.toMutableList(),
         backPos = null,
         rank = "member",
-        homeLimit = 3
+        homeLimit = 3,
+        muted = false,
+        inStaffChat = false
     )
 }
 

@@ -20,8 +20,6 @@ public abstract class LiteralTextMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void LiteralText(String string, CallbackInfo ci) {
-        System.out.println("YO!!! I GOT A LITERAL TEXT!: " + this.string);
         this.string = TextFormatterKt.formatString(string);
-        System.out.println("Pog i formatted it: " + this.string);
     }
 }

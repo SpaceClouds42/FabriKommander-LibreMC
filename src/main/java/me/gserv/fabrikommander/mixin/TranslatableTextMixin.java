@@ -20,7 +20,6 @@ public abstract class TranslatableTextMixin {
 
     @Inject(method = "<init>(Ljava/lang/String;[Ljava/lang/Object;)V", at = @At("RETURN"))
     public void TranslatableText(String key, Object[] args, CallbackInfo ci) {
-        System.out.println("doing fancy translatable text stuffs");
         this.key = key;
         this.args = args;
 
@@ -37,7 +36,6 @@ public abstract class TranslatableTextMixin {
                 }
             }
         }
-        System.out.println("done with translatable text stuffs");
     }
 
     @Mutable

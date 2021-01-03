@@ -88,11 +88,8 @@ public abstract class PlayerManagerMixin {
     public void updatePlayerLatency(CallbackInfo ci) {
         @SuppressWarnings("ConstantConditions")
         PlayerListMixin packet = (PlayerListMixin) new PlayerListHeaderS2CPacket();
-        System.out.println("YO! IM SETTING THE FOOTER AND HEADER RN!!");
-        packet.setFooter(new LiteralText(tablistChars("&a&lTPS: #TPS#NMSPT: #MSPT")));
-        packet.setHeader(new LiteralText(tablistChars("&b&lLibreMC#N&7Uptime: #UPTIME")));
-        System.out.println("I JUST DID IT! (set header/footer)");
+        packet.setFooter(new LiteralText(formatString("&a&lTPS: #TPS#NMSPT: #MSPT")));
+        packet.setHeader(new LiteralText(formatString("&b&lLibreMC#N&7Uptime: #UPTIME")));
         this.sendToAll(packet);
-        System.out.println("okie now i sent packets for tablist");
     }
 }

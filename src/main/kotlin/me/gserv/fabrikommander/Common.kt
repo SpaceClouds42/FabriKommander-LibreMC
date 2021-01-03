@@ -52,15 +52,18 @@ object Common : ModInitializer {
         // Text commands
         PingCommand(dispatcher).register()
         DiscordCommand(dispatcher).register()
+        DisplayItemCommand(dispatcher).register()
+        FormatCommand(dispatcher).register()
         RulesCommand(dispatcher).register()
         InfoCommand(dispatcher).register()
         RanksCommand(dispatcher).register()
+        StaffChatCommand(dispatcher).register()
 
         // Donor commands
         RankCommand(dispatcher).register()
     }
 
     fun onTick(minecraftServer: MinecraftServer) {
-        TablistVariables().onTick(minecraftServer)
+        TablistVariables.INSTANCE.onTick(minecraftServer)
     }
 }
