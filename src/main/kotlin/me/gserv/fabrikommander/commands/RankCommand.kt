@@ -82,7 +82,7 @@ class RankCommand(val dispatcher: Dispatcher) {
             PlayerDataManager.setHomeLimit(targetPlayer.uuid, rankToHomeLimit[newRank]!!)
         }
 
-        if (newRank !in staffRanks) {
+        if (newRank !in staffRanks && PlayerDataManager.isInStaffChat(targetPlayer.uuid)!!) {
             PlayerDataManager.setInStaffChat(targetPlayer.uuid, false)
             targetPlayer.sendSystemMessage(
                 gray("[") + yellow("Staff") + gray("] ") + red("Left Staff Chat"),

@@ -1,7 +1,9 @@
 package me.gserv.fabrikommander.utils
 
+import kotlinx.serialization.json.JsonConfiguration
 import me.gserv.fabrikommander.data.PlayerDataManager
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.util.Formatting
 import org.apache.logging.log4j.core.Logger
 import org.apache.logging.log4j.LogManager
 
@@ -37,6 +39,25 @@ val rankToHomeLimit = hashMapOf(
     "Mod" to 8,
     "Dev" to 8,
     "Owner" to 8
+)
+
+val rankToPrefix = hashMapOf(
+    "member" to reset(""),
+    "VIP" to reset("") + gray("[") + darkGreen("VIP") + gray("] ") + reset(""),
+    "VIP+" to reset("") + gray("[") + darkGreen("VIP") + green("+") + gray("] ") + reset(""),
+    "MVP" to reset("") + gray("[") + gold("MVP") + gray("] ") + reset(""),
+    "MVP+" to reset("") + gray("[") + gold("MVP") + green("+") + gray("] ") + reset(""),
+    "Builder" to reset("") + gray("[") + darkRed("Builder") + gray("] ") + reset(""),
+    "Helper" to reset("") + gray("[") + green("Helper") + gray("] ") + reset(""),
+    "Mod" to reset("") + gray("[") + aqua("Mod") + gray("] ") + reset(""),
+    "Dev" to reset("") + gray("[") + darkPurple("Dev") + gray("] ") + reset(""),
+    "Owner" to reset("") + gray("[") + blue("Owner") + gray("] ") + reset("")
+)
+
+val rankToNameColor = hashMapOf(
+    "member" to "gray",
+    "VIP" to "darkGreen",
+    "VIP+" to "darkGreen",
 )
 
 val LOGGER = LogManager.getLogger("FabriKommander-LibreMC") as Logger

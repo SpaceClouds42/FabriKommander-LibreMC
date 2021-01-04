@@ -4,6 +4,7 @@ import net.minecraft.text.*
 import net.minecraft.util.Formatting
 
 // region: String to text
+fun colorizer(text: String, color: Formatting) = LiteralText(text).setStyle(Style.EMPTY.withColor(color))
 fun aqua(string: String) = LiteralText(string).setStyle(Style.EMPTY.withColor(Formatting.AQUA))
 fun black(string: String) = LiteralText(string).setStyle(Style.EMPTY.withColor(Formatting.BLACK))
 fun blue(string: String) = LiteralText(string).setStyle(Style.EMPTY.withColor(Formatting.BLUE))
