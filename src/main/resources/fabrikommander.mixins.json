@@ -3,8 +3,12 @@
   "package": "me.gserv.fabrikommander.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "LiteralTextMixin",
+    "PlayerEntityMixin",
+    "PlayerListMixin",
     "PlayerManagerMixin",
-    "PlayerEntityMixin"
+    "ServerPlayNetworkHandlerMixin",
+    "TranslatableTextMixin"
   ],
   "injectors": {
     "defaultRequire": 1

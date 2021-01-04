@@ -4,16 +4,21 @@ import me.gserv.fabrikommander.data.PlayerDataManager;
 import me.gserv.fabrikommander.data.SpawnDataManager;
 import me.gserv.fabrikommander.data.spec.Spawn;
 import static me.gserv.fabrikommander.utils.TextKt.*;
+import static me.gserv.fabrikommander.utils.TextFormatterKt.*;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.util.Util;
 import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -22,7 +27,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 @Mixin(PlayerManager.class)
-public class PlayerManagerMixin {
+public abstract class PlayerManagerMixin {
     private Boolean isNewPlayer(ServerPlayerEntity player) {
         String uuid = player.getUuidAsString();
         FilenameFilter filter = new FilenameFilter() {
@@ -74,5 +79,17 @@ public class PlayerManagerMixin {
     @Inject(at = @At("RETURN"), method = "remove")
     private void remove(ServerPlayerEntity player, CallbackInfo ci) {
         PlayerDataManager.INSTANCE.playerLeft(player);
+    }
+
+    @Shadow
+    public abstract void sendToAll(Packet<?> packet);
+
+    @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
+    public void updatePlayerLatency(CallbackInfo ci) {
+        @SuppressWarnings("ConstantConditions")
+        PlayerListMixin packet = (PlayerListMixin) new PlayerListHeaderS2CPacket();
+        packet.setFooter(new LiteralText(formatString("&a&lTPS: #TPS#NMSPT: #MSPT")));
+        packet.setHeader(new LiteralText(formatString("&b&lLibreMC#N&7Uptime: #UPTIME")));
+        this.sendToAll(packet);
     }
 }

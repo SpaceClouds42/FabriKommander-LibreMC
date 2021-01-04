@@ -8,7 +8,13 @@ data class Player(
 
     val homes: MutableList<Home> = mutableListOf(),
 
-    var homeLimit: Int? = null,
+    var backPos: Pos? = null,
 
-    var backPos: Pos? = null
+    var rank: String = "member",
+
+    var homeLimit: Int = 3,
+
+    var muted: Boolean = false,
+
+    var inStaffChat: Boolean = false
 )

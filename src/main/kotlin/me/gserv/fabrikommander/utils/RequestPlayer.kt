@@ -18,5 +18,5 @@ fun requestPlayer(context: CommandContext<ServerCommandSource>, requestedProfile
         minecraftServer.playerManager.loadPlayerData(requestedPlayer)
     }
     PlayerDataManager.playerJoined(requestedPlayer!!)
-    return requestedPlayer!!
+    return requestedPlayer
 }

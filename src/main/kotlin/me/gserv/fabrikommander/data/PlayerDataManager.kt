@@ -120,6 +120,32 @@ object PlayerDataManager {
         return cache[uuid]?.homeLimit
     }
 
+    fun getRank(uuid: UUID): String? {
+        return cache[uuid]?.rank
+    }
+
+    fun isInStaffChat(uuid: UUID): Boolean? {
+        return cache[uuid]?.inStaffChat
+    }
+
+    fun toggleStaffChat(uuid: UUID) {
+        cache[uuid]?.inStaffChat = !isInStaffChat(uuid)!!
+
+        saveData(uuid)
+    }
+
+    fun setInStaffChat(uuid: UUID, newInStaffChat: Boolean) {
+        cache[uuid]?.inStaffChat = newInStaffChat
+
+        saveData(uuid)
+    }
+
+    fun setRank(uuid: UUID, newRank: String) {
+        cache[uuid]?.rank = newRank
+
+        saveData(uuid)
+    }
+
     fun setHomeLimit(uuid: UUID, newHomeLimit: Int) {
         cache[uuid]?.homeLimit = newHomeLimit
 

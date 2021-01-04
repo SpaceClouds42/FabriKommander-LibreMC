@@ -24,8 +24,11 @@ fun OldPlayer.toNewPlayer(): Player {
     return Player(
         name = this.name,
         homes = this.homes.map { it.toNewHome() }.toMutableList(),
-        homeLimit = null,
-        backPos = null
+        backPos = null,
+        rank = "member",
+        homeLimit = 3,
+        muted = false,
+        inStaffChat = false
     )
 }
 
