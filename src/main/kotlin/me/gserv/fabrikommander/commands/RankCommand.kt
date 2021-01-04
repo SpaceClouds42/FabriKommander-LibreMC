@@ -66,6 +66,8 @@ class RankCommand(val dispatcher: Dispatcher) {
             return 1
         }
 
+        changeHomeLimit(context, targetPlayer, newRank)
+        kickFromStaffChat(targetPlayer, newRank)
         PlayerDataManager.setRank(targetPlayer.uuid, newRank)
         context.source.sendFeedback(
             green("Gave ") +
@@ -75,20 +77,6 @@ class RankCommand(val dispatcher: Dispatcher) {
                     green(" rank"),
             true
         )
-
-        if (targetPlayer.hasPermissionLevel(2)) {
-            PlayerDataManager.setHomeLimit(targetPlayer.uuid, 0)
-        } else {
-            PlayerDataManager.setHomeLimit(targetPlayer.uuid, rankToHomeLimit[newRank]!!)
-        }
-
-        if (newRank !in staffRanks && PlayerDataManager.isInStaffChat(targetPlayer.uuid)!!) {
-            PlayerDataManager.setInStaffChat(targetPlayer.uuid, false)
-            targetPlayer.sendSystemMessage(
-                gray("[") + yellow("Staff") + gray("] ") + red("Left Staff Chat"),
-                Util.NIL_UUID
-            )
-        }
 
         return 1
     }
@@ -115,5 +103,25 @@ class RankCommand(val dispatcher: Dispatcher) {
         }
 
         return 1
+    }
+
+    private fun changeHomeLimit(context: Context, targetPlayer: ServerPlayerEntity, newRank: String) {
+        val isNewRankMoreHomes = rankToHomeLimit[newRank]!! > PlayerDataManager.getHomeLimit(targetPlayer.uuid)!!
+        val isNewRankHigher = ranks.indexOf(newRank) > ranks.indexOf(PlayerDataManager.getRank(targetPlayer.uuid))
+        if (targetPlayer.hasPermissionLevel(2)) {
+            PlayerDataManager.setHomeLimit(targetPlayer.uuid, 0)
+        } else if (isNewRankHigher && isNewRankMoreHomes) {
+            PlayerDataManager.setHomeLimit(targetPlayer.uuid, rankToHomeLimit[newRank]!!)
+        }
+    }
+
+    private fun kickFromStaffChat(targetPlayer: ServerPlayerEntity, newRank: String) {
+        if (newRank !in staffRanks && PlayerDataManager.isInStaffChat(targetPlayer.uuid)!!) {
+            PlayerDataManager.setInStaffChat(targetPlayer.uuid, false)
+            targetPlayer.sendSystemMessage(
+                gray("[") + yellow("Staff") + gray("] ") + red("Left Staff Chat"),
+                Util.NIL_UUID
+            )
+        }
     }
 }
