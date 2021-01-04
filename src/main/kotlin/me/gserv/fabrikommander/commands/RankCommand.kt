@@ -110,8 +110,28 @@ class RankCommand(val dispatcher: Dispatcher) {
         val isNewRankHigher = ranks.indexOf(newRank) > ranks.indexOf(PlayerDataManager.getRank(targetPlayer.uuid))
         if (targetPlayer.hasPermissionLevel(2)) {
             PlayerDataManager.setHomeLimit(targetPlayer.uuid, 0)
+            context.source.sendFeedback(
+                green("Set home limit of player ") +
+                        targetPlayer.displayName +
+                        green(" to ") +
+                        gold("infinite"),
+                false
+            )
         } else if (isNewRankHigher && isNewRankMoreHomes) {
             PlayerDataManager.setHomeLimit(targetPlayer.uuid, rankToHomeLimit[newRank]!!)
+            context.source.sendFeedback(
+                green("Set home limit of player ") +
+                        targetPlayer.displayName +
+                        green(" to ") +
+                        gold("${rankToHomeLimit[newRank]}"),
+                false
+            )
+        } else {
+            context.source.sendFeedback(
+                green("Did not change home limit of player ") +
+                        targetPlayer.displayName,
+                false
+            )
         }
     }
 
