@@ -71,7 +71,7 @@ public class ServerPlayNetworkHandlerMixin {
             int spaceAfterTargetPlayer = 3 + packet.getChatMessage().substring(3).indexOf(" ");
             String message = packet.getChatMessage().substring(spaceAfterTargetPlayer);
             String targetPlayer = packet.getChatMessage().substring(3, spaceAfterTargetPlayer);
-            log("chat.private", player.getEntityName() + " to " + targetPlayer + ":" + message);
+            log("chat.private", "[PM] " + player.getEntityName() + " to " + targetPlayer + ":" + message);
         }
     }
 
@@ -81,7 +81,7 @@ public class ServerPlayNetworkHandlerMixin {
                 MessageType.SYSTEM,
                 Util.NIL_UUID
         );
-        log("chat.main", sender + " > " + rawMessage);
+        log("chat.main", "[Chat] " + sender + " > " + rawMessage);
     }
 
     private void broadcastStaffMsg(MutableText message, MinecraftServer server, String rawMessage, String sender) {
@@ -90,6 +90,6 @@ public class ServerPlayNetworkHandlerMixin {
                 p.sendSystemMessage(message, Util.NIL_UUID);
             }
         });
-        log("chat.staff", sender + " > " + rawMessage);
+        log("chat.staff", "[Staff] " + sender + " > " + rawMessage);
     }
 }
