@@ -37,8 +37,8 @@ fun formatChatMessage(player: ServerPlayerEntity, message: String): MutableText 
                     ),
                     HoverEvent(
                         HoverEvent.Action.SHOW_TEXT,
-                        white("Name: ${player.entityName}\n" +
-                                "Type: Player\n" +
+                        white(player.entityName +
+                                "\nType: Player\n" +
                                 player.uuidAsString
                         )
                     )

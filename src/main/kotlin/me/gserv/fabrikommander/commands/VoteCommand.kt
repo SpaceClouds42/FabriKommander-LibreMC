@@ -15,7 +15,7 @@ class VoteCommand(val dispatcher: Dispatcher) {
 
     fun discordCommand(context: Context): Int {
         context.source.sendFeedback(
-            green(underline("Vote for the server\n")) +
+            reset("") + green(underline("Vote for the server\n")) + reset("") +
             hover(
                 click(
                     aqua("Minecraft-MP\n"),

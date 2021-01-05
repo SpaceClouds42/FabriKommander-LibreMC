@@ -12,7 +12,7 @@ data class Player(
 
     var rank: String = "member",
 
-    var homeLimit: Int = 3,
+    var homeLimit: Int? = 3,
 
     var muted: Boolean = false,
 

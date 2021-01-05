@@ -2,6 +2,7 @@ package me.gserv.fabrikommander.mixin;
 
 import me.gserv.fabrikommander.data.PlayerDataManager;
 import me.gserv.fabrikommander.utils.TextKt;
+import net.minecraft.network.MessageType;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -61,9 +62,11 @@ public class ServerPlayNetworkHandlerMixin {
     }
 
     private void broadcastChatMsg(MutableText message, String sender, String rawMessage) {
-        server.getPlayerManager().getPlayerList().forEach(p -> {
-            p.sendSystemMessage(message, Util.NIL_UUID);
-        });
+        server.getPlayerManager().broadcastChatMessage(
+                message,
+                MessageType.CHAT,
+                Util.NIL_UUID
+        );
         System.out.println("[Chat] " + sender + " > " + rawMessage);
     }
 
