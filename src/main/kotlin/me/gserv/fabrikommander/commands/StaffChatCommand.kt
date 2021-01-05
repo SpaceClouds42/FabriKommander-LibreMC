@@ -53,7 +53,7 @@ class StaffChatCommand(val dispatcher: Dispatcher) {
                 }
             }
         )
-        println("[Staff] ${player.entityName} > ${message}")
+        log("chat.staff", "${player.entityName} > $message")
 
         return 1
     }

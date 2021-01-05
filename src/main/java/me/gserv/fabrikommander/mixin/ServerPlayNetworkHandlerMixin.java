@@ -9,24 +9,19 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.util.Util;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.gserv.fabrikommander.utils.LoggersKt.log;
 import static me.gserv.fabrikommander.utils.RanksKt.*;
 import static me.gserv.fabrikommander.utils.TextFormatterKt.formatChatMessage;
 import static me.gserv.fabrikommander.utils.TextKt.*;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin {
-    private final Logger CHAT_LOGGER = (Logger) LogManager.getLogger("Chat");
-    private final Logger STAFF_CHAT_LOGGER = (Logger) LogManager.getLogger("Staff Chat");
-    private final Logger PRIVATE_CHAT_LOGGER = (Logger) LogManager.getLogger("Private Message");
-
     @Shadow
     public ServerPlayerEntity player;
     @Shadow
@@ -63,10 +58,20 @@ public class ServerPlayNetworkHandlerMixin {
             );
             info.cancel();
         } else if (packet.getChatMessage().startsWith("/msg")) {
-            int spaceAfterTargetPlayer = packet.getChatMessage().substring(4).indexOf(" ");
+            int spaceAfterTargetPlayer = 5 + packet.getChatMessage().substring(5).indexOf(" ");
             String message = packet.getChatMessage().substring(spaceAfterTargetPlayer);
             String targetPlayer = packet.getChatMessage().substring(5, spaceAfterTargetPlayer);
-            PRIVATE_CHAT_LOGGER.info(player.getEntityName() + " to " + targetPlayer + ": " + message);
+            log("chat.private", player.getEntityName() + " to " + targetPlayer + ":" + message);
+        } else if (packet.getChatMessage().startsWith("/tell")) {
+            int spaceAfterTargetPlayer = 6 + packet.getChatMessage().substring(6).indexOf(" ");
+            String message = packet.getChatMessage().substring(spaceAfterTargetPlayer);
+            String targetPlayer = packet.getChatMessage().substring(6, spaceAfterTargetPlayer);
+            log("chat.private", player.getEntityName() + " to " + targetPlayer + ":" + message);
+        } else if (packet.getChatMessage().startsWith("/w")) {
+            int spaceAfterTargetPlayer = 3 + packet.getChatMessage().substring(3).indexOf(" ");
+            String message = packet.getChatMessage().substring(spaceAfterTargetPlayer);
+            String targetPlayer = packet.getChatMessage().substring(3, spaceAfterTargetPlayer);
+            log("chat.private", player.getEntityName() + " to " + targetPlayer + ":" + message);
         }
     }
 
@@ -76,7 +81,7 @@ public class ServerPlayNetworkHandlerMixin {
                 MessageType.SYSTEM,
                 Util.NIL_UUID
         );
-        CHAT_LOGGER.info("[Chat] " + sender + " > " + rawMessage);
+        log("chat.main", sender + " > " + rawMessage);
     }
 
     private void broadcastStaffMsg(MutableText message, MinecraftServer server, String rawMessage, String sender) {
@@ -85,6 +90,6 @@ public class ServerPlayNetworkHandlerMixin {
                 p.sendSystemMessage(message, Util.NIL_UUID);
             }
         });
-        STAFF_CHAT_LOGGER.info("[Staff] " + sender + " > " + rawMessage);
+        log("chat.staff", sender + " > " + rawMessage);
     }
 }
