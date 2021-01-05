@@ -1,6 +1,7 @@
 package me.gserv.fabrikommander.data.spec
 
 import kotlinx.serialization.Serializable
+import net.minecraft.text.LiteralText
 
 @Serializable
 data class Player(
@@ -16,5 +17,7 @@ data class Player(
 
     var muted: Boolean = false,
 
-    var inStaffChat: Boolean = false
+    var inStaffChat: Boolean = false,
+
+    var nick: String? = null
 )

@@ -1,6 +1,13 @@
 package me.gserv.fabrikommander
 
-import me.gserv.fabrikommander.commands.*
+import me.gserv.fabrikommander.commands.donor.*
+import me.gserv.fabrikommander.commands.homeManagement.*
+import me.gserv.fabrikommander.commands.misc.*
+import me.gserv.fabrikommander.commands.staff.*
+import me.gserv.fabrikommander.commands.teleport.*
+import me.gserv.fabrikommander.commands.text.*
+import me.gserv.fabrikommander.commands.TPA.*
+import me.gserv.fabrikommander.commands.warpManagement.*
 import me.gserv.fabrikommander.data.PlayerDataManager
 import me.gserv.fabrikommander.data.SpawnDataManager
 import me.gserv.fabrikommander.data.WarpDataManager
@@ -28,6 +35,9 @@ object Common : ModInitializer {
     fun registerCommands(dispatcher: Dispatcher, dedicated: Boolean) {
         logger.debug("Registering commands.")
 
+        // Donor commands
+        NickCommand(dispatcher).register()
+
         // Home management commands
         DelHomeCommand(dispatcher).register()
         GetHomeCommand(dispatcher).register()
@@ -36,28 +46,16 @@ object Common : ModInitializer {
         HomesCommand(dispatcher).register()
         SetHomeCommand(dispatcher).register()
 
-        // Warp management commands
-        DelWarpCommand(dispatcher).register()
-        GetWarpCommand(dispatcher).register()
-        SetWarpCommand(dispatcher).register()
-        WarpCommand(dispatcher).register()
-        WarpsCommand(dispatcher).register()
+        // Misc commands
+        DieCommand(dispatcher).register()
 
-        // TPA commands
-        TpaCommand(dispatcher).register()
-        TpaHereCommand(dispatcher).register()
-        TpAcceptCommand(dispatcher).register()
-        TpCancelCommand(dispatcher).register()
-        TpDenyCommand(dispatcher).register()
+        // Staff commands
+        StaffChatCommand(dispatcher).register()
+        RankCommand(dispatcher).register()
         
         // Teleport commands
         BackCommand(dispatcher).register()
         RtpCommand(dispatcher).register()
-        SpawnCommand(dispatcher).register()
-        SetSpawnCommand(dispatcher).register()
-
-        // Misc commands
-        DieCommand(dispatcher).register()
 
         // Text commands
         DiscordCommand(dispatcher).register()
@@ -69,10 +67,22 @@ object Common : ModInitializer {
         VoteCommand(dispatcher).register()
         InfoCommand(dispatcher).register()
         RanksCommand(dispatcher).register()
-        StaffChatCommand(dispatcher).register()
 
-        // Donor commands
-        RankCommand(dispatcher).register()
+        // TPA commands
+        TpaCommand(dispatcher).register()
+        TpaHereCommand(dispatcher).register()
+        TpAcceptCommand(dispatcher).register()
+        TpCancelCommand(dispatcher).register()
+        TpDenyCommand(dispatcher).register()
+
+        // Warp management commands
+        DelWarpCommand(dispatcher).register()
+        GetWarpCommand(dispatcher).register()
+        SetWarpCommand(dispatcher).register()
+        WarpCommand(dispatcher).register()
+        WarpsCommand(dispatcher).register()
+        SpawnCommand(dispatcher).register()
+        SetSpawnCommand(dispatcher).register()
     }
 
     fun onTick(minecraftServer: MinecraftServer) {

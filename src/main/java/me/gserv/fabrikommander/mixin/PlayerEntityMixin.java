@@ -1,6 +1,6 @@
 package me.gserv.fabrikommander.mixin;
 
-import me.gserv.fabrikommander.commands.BackCommand;
+import me.gserv.fabrikommander.commands.teleport.BackCommand;
 import me.gserv.fabrikommander.data.PlayerDataManager;
 import me.gserv.fabrikommander.data.spec.Pos;
 import net.minecraft.entity.EntityType;

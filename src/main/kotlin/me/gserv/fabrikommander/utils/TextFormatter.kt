@@ -25,27 +25,8 @@ fun customVariables(text: String): String {
 }
 
 fun formatChatMessage(player: ServerPlayerEntity, message: String): MutableText {
-    val prefix = rankToPrefix[PlayerDataManager.getRank(player.uuid)]!!.shallowCopy()
-    val name = reset("") +
-                hover(
-                    click(
-                        gray(player.entityName),
-                        ClickEvent(
-                            ClickEvent.Action.SUGGEST_COMMAND,
-                            "/tell ${player.entityName}"
-                        )
-                    ),
-                    HoverEvent(
-                        HoverEvent.Action.SHOW_TEXT,
-                        white(player.entityName +
-                                "\nType: Player\n" +
-                                player.uuidAsString
-                        )
-                    )
-                )
-                gray(player.entityName) +
-                reset("")
+    val name = player.customName()
     val connector = reset(" ") + darkGray(bold(">")) + reset(" ")
     val messageAsMutableText = reset(white(message))
-    return prefix + name + connector + messageAsMutableText
+    return name + connector + messageAsMutableText
 }

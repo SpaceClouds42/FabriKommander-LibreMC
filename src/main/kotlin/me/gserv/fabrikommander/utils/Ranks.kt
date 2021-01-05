@@ -1,9 +1,10 @@
 package me.gserv.fabrikommander.utils
 
-import kotlinx.serialization.json.JsonConfiguration
 import me.gserv.fabrikommander.data.PlayerDataManager
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.util.Formatting
+import net.minecraft.text.ClickEvent
+import net.minecraft.text.HoverEvent
+import net.minecraft.text.MutableText
 import org.apache.logging.log4j.core.Logger
 import org.apache.logging.log4j.LogManager
 
@@ -70,3 +71,51 @@ fun hasRankPermissionLevel(player: ServerPlayerEntity, rank: String): Boolean {
     }
     return ranks.indexOf(PlayerDataManager.getRank(player.uuid)) >= ranks.indexOf(rank)
 }
+
+fun ServerPlayerEntity.customName(): MutableText {
+    val prefix = rankToPrefix[PlayerDataManager.getRank(this.uuid)]!!.shallowCopy()
+    val name: MutableText
+    val nick = PlayerDataManager.getNick(this.uuid)
+    if (nick == null) {
+        name = reset("") +
+                hover(
+                    click(
+                        gray(this.entityName),
+                        ClickEvent(
+                            ClickEvent.Action.SUGGEST_COMMAND,
+                            "/tell ${this.entityName}"
+                        )
+                    ),
+                    HoverEvent(
+                        HoverEvent.Action.SHOW_TEXT,
+                        white(this.entityName +
+                                "\nType: Player\n" +
+                                this.uuid
+                        )
+                    )
+                ) +
+                reset("")
+    } else {
+        name = reset("") +
+                hover(
+                    click(
+                        reset(nick),
+                        ClickEvent(
+                            ClickEvent.Action.SUGGEST_COMMAND,
+                            "/tell ${this.entityName}"
+                        )
+                    ),
+                    HoverEvent(
+                        HoverEvent.Action.SHOW_TEXT,
+                        white(this.entityName +
+                                "\nType: Player\n" +
+                                this.uuid
+                        )
+                    )
+                ) +
+                reset("")
+    }
+
+    return reset("") + prefix + name + reset("")
+}
+

@@ -28,7 +28,8 @@ fun OldPlayer.toNewPlayer(): Player {
         rank = "member",
         homeLimit = 3,
         muted = false,
-        inStaffChat = false
+        inStaffChat = false,
+        nick = null
     )
 }
 

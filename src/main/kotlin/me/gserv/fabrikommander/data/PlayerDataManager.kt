@@ -124,6 +124,10 @@ object PlayerDataManager {
         return cache[uuid]?.rank
     }
 
+    fun getNick(uuid: UUID): String? {
+        return cache[uuid]?.nick
+    }
+
     fun isInStaffChat(uuid: UUID): Boolean? {
         return cache[uuid]?.inStaffChat
     }
@@ -136,6 +140,12 @@ object PlayerDataManager {
 
     fun setInStaffChat(uuid: UUID, newInStaffChat: Boolean) {
         cache[uuid]?.inStaffChat = newInStaffChat
+
+        saveData(uuid)
+    }
+
+    fun setNick(uuid: UUID, newNick: String?) {
+        cache[uuid]?.nick = newNick
 
         saveData(uuid)
     }
