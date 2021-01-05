@@ -77,5 +77,9 @@ object Common : ModInitializer {
 
     fun onTick(minecraftServer: MinecraftServer) {
         TablistVariables.INSTANCE.onTick(minecraftServer)
+        // RNG manipulation patch
+        for (player in minecraftServer.playerManager.playerList) {
+            player.random.nextInt()
+        }
     }
 }
