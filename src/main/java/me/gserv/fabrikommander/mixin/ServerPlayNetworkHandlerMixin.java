@@ -53,7 +53,7 @@ public class ServerPlayNetworkHandlerMixin {
 
             broadcastChatMsg(
                     formatChatMessage(player, rawMessage),
-                    player.getEntityName(),
+                    player,
                     rawMessage
             );
             info.cancel();
@@ -75,13 +75,13 @@ public class ServerPlayNetworkHandlerMixin {
         }
     }
 
-    private void broadcastChatMsg(MutableText message, String sender, String rawMessage) {
+    private void broadcastChatMsg(MutableText message, ServerPlayerEntity sender, String rawMessage) {
         server.getPlayerManager().broadcastChatMessage(
                 message,
-                MessageType.SYSTEM,
-                Util.NIL_UUID
+                MessageType.CHAT,
+                sender.getUuid()
         );
-        log("chat.main", "[Chat] " + sender + " > " + rawMessage);
+        log("chat.main", "[Chat] " + sender.getEntityName() + " > " + rawMessage);
     }
 
     private void broadcastStaffMsg(MutableText message, MinecraftServer server, String rawMessage, String sender) {
