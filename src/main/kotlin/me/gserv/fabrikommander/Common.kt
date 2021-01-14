@@ -36,6 +36,7 @@ object Common : ModInitializer {
         logger.debug("Registering commands.")
 
         // Donor commands
+        GlintCommand(dispatcher).register()
         NickCommand(dispatcher).register()
 
         // Home management commands

@@ -2,6 +2,7 @@ package me.gserv.fabrikommander.data
 
 import com.charleskorn.kaml.UnknownPropertyException
 import com.charleskorn.kaml.Yaml
+import me.gserv.fabrikommander.coolDown.CoolDowns
 import me.gserv.fabrikommander.data.spec.Home
 import me.gserv.fabrikommander.data.spec.Player
 import me.gserv.fabrikommander.data.spec.Pos
@@ -11,6 +12,8 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.WorldSavePath
 import org.apache.logging.log4j.LogManager
 import java.nio.file.Path
+import java.time.Duration
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -126,6 +129,18 @@ object PlayerDataManager {
 
     fun getNick(uuid: UUID): String? {
         return cache[uuid]?.nick
+    }
+
+    fun getCoolDownSetAt(uuid: UUID, coolDownType: CoolDowns): LocalDateTime? {
+        return LocalDateTime.parse(cache[uuid]?.coolDowns?.get(coolDownType))
+    }
+
+    fun setCoolDown(uuid: UUID, coolDownType: CoolDowns) {
+        cache[uuid]?.coolDowns?.set(coolDownType, LocalDateTime.now().toString())
+    }
+
+    fun resetCoolDown(uuid: UUID, coolDownType: CoolDowns) {
+        cache[uuid]?.coolDowns?.set(coolDownType, LocalDateTime.MIN.toString())
     }
 
     fun isInStaffChat(uuid: UUID): Boolean? {

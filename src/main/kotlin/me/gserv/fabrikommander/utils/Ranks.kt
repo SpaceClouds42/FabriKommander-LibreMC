@@ -7,6 +7,7 @@ import net.minecraft.text.HoverEvent
 import net.minecraft.text.MutableText
 import org.apache.logging.log4j.core.Logger
 import org.apache.logging.log4j.LogManager
+import me.gserv.fabrikommander.extension.hasRankPermissionLevel
 
 val ranks = listOf(
     "member",
@@ -14,6 +15,7 @@ val ranks = listOf(
     "VIP+",
     "MVP",
     "MVP+",
+    "OGDON",
     "Builder",
     "Helper",
     "Mod",
@@ -35,6 +37,7 @@ val rankToHomeLimit = hashMapOf(
     "VIP+" to 8,
     "MVP" to 12,
     "MVP+" to 20,
+    "OGDON" to 20,
     "Builder" to 8,
     "Helper" to 8,
     "Mod" to 8,
@@ -48,6 +51,7 @@ val rankToPrefix = hashMapOf(
     "VIP+" to reset("") + gray("[") + darkGreen("VIP") + green("+") + gray("] ") + reset(""),
     "MVP" to reset("") + gray("[") + gold("MVP") + gray("] ") + reset(""),
     "MVP+" to reset("") + gray("[") + gold("MVP") + green("+") + gray("] ") + reset(""),
+    "OGDON" to reset("") + gray("[") + red("OGDON") + gray("] ") + reset(""),
     "Builder" to reset("") + gray("[") + darkRed("Builder") + gray("] ") + reset(""),
     "Helper" to reset("") + gray("[") + green("Helper") + gray("] ") + reset(""),
     "Mod" to reset("") + gray("[") + aqua("Mod") + gray("] ") + reset(""),
@@ -55,21 +59,17 @@ val rankToPrefix = hashMapOf(
     "Owner" to reset("") + gray("[") + blue("Owner") + gray("] ") + reset("")
 )
 
-val rankToNameColor = hashMapOf(
-    "member" to "gray",
-    "VIP" to "darkGreen",
-    "VIP+" to "darkGreen",
-)
-
 val LOGGER = LogManager.getLogger("FabriKommander-LibreMC") as Logger
 
-
+@Deprecated (
+    "hasRankPermissionLevel is now an extension function of ServerPlayerEntity",
+    ReplaceWith(
+        "ServerPlayerEntity.hasRankPermissionLevel(rank: String)",
+        "import me.gserv.fabrikommander.extension.hasRankPermissionLevel"
+    )
+)
 fun hasRankPermissionLevel(player: ServerPlayerEntity, rank: String): Boolean {
-    if (!ranks.contains(rank)) {
-        LOGGER.info("ERROR: Ranks.kt; Rank '$rank' not found, a command or event must be checking for a rank permission level with the wrong rank name.")
-        return false
-    }
-    return ranks.indexOf(PlayerDataManager.getRank(player.uuid)) >= ranks.indexOf(rank)
+    return player.hasRankPermissionLevel(rank)
 }
 
 fun ServerPlayerEntity.customName(): MutableText {

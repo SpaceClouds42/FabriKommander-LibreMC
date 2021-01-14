@@ -1,7 +1,8 @@
 package me.gserv.fabrikommander.data.spec
 
 import kotlinx.serialization.Serializable
-import net.minecraft.text.LiteralText
+import me.gserv.fabrikommander.coolDown.CoolDowns
+import java.util.*
 
 @Serializable
 data class Player(
@@ -19,5 +20,7 @@ data class Player(
 
     var inStaffChat: Boolean = false,
 
-    var nick: String? = null
+    var nick: String? = null,
+
+    var coolDowns: MutableMap<CoolDowns, String> = EnumMap(CoolDowns::class.java),
 )
