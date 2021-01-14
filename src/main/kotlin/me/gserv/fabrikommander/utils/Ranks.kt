@@ -64,7 +64,7 @@ val LOGGER = LogManager.getLogger("FabriKommander-LibreMC") as Logger
 @Deprecated (
     "hasRankPermissionLevel is now an extension function of ServerPlayerEntity",
     ReplaceWith(
-        "ServerPlayerEntity.hasRankPermissionLevel(rank: String)",
+        "player.hasRankPermissionLevel(rank)",
         "import me.gserv.fabrikommander.extension.hasRankPermissionLevel"
     )
 )

@@ -1,21 +1,22 @@
 package me.gserv.fabrikommander.commands.donor
 
 import me.gserv.fabrikommander.coolDown.CoolDowns
-import me.gserv.fabrikommander.coolDown.GlintCoolDown
 import me.gserv.fabrikommander.data.PlayerDataManager
+import me.gserv.fabrikommander.extension.getCoolDown
+import me.gserv.fabrikommander.extension.hasRankPermissionLevel
+import me.gserv.fabrikommander.extension.isCoolDownOver
+import me.gserv.fabrikommander.extension.prettyPrint
 import me.gserv.fabrikommander.utils.*
 import net.minecraft.server.command.CommandManager
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.LiteralText
-import net.minecraft.text.MutableText
-import net.minecraft.text.TranslatableText
 
+//TODO: Donor command interface, should have "notDonor(player)" function
+//TODO: CoolDownCommand interface, should have "val coolDown: CoolDowns" property
 class GlintCommand(val dispatcher: Dispatcher) {
     fun register() {
         val glintNode: Node =
             CommandManager
                 .literal("glint")
-                .requires { hasRankPermissionLevel(it.player, "VIP") }
+                .requires { it.player.hasRankPermissionLevel("VIP") }
                 .executes { glintAddCommand(it) }
                 .build()
         val removeNode: Node =
@@ -27,6 +28,7 @@ class GlintCommand(val dispatcher: Dispatcher) {
         dispatcher.root.addChild(glintNode)
         glintNode.addChild(removeNode)
     }
+
     fun glintAddCommand(context: Context): Int {
         val player = context.source.player
         val itemStack = player.mainHandStack
@@ -36,17 +38,23 @@ class GlintCommand(val dispatcher: Dispatcher) {
             )
             return 0
         }
+        if (itemStack.count != 1) {
+            context.source.sendError(
+                red("Cannot glint multiple items at once")
+            )
+            return 0
+        }
         if (itemStack.hasGlint()) {
             context.source.sendError(
                 red("This item already has a glint")
             )
             return 0
         }
-        if (GlintCoolDown().isCoolDownOver(player) == true) {
+        if (player.isCoolDownOver(CoolDowns.GLINT)) {
             itemStack.orCreateTag.putBoolean("Glint", true)
             context.source.sendFeedback(
                 green("Glint added to ") +
-                        aqua(itemStack.name.asString()),
+                        aqua(itemStack.name.copy()),
                 false
             )
             PlayerDataManager.setCoolDown(player.uuid, CoolDowns.GLINT)
@@ -54,13 +62,12 @@ class GlintCommand(val dispatcher: Dispatcher) {
         } else {
             context.source.sendError(
                 red("You cannot use this command for ")  +
-                        //TODO: Cooldown is not formatted properly
-                        gold(GlintCoolDown().getCoolDown(player).toString())
+                        gold(player.getCoolDown(CoolDowns.GLINT)!!.prettyPrint())
             )
             return 0
         }
     }
-    //TODO: Shouldn't successfully remove glint from default glints, should instead check for
+
     fun glintRemoveCommand(context: Context): Int {
         val player = context.source.player
         val itemStack = player.mainHandStack
@@ -72,25 +79,23 @@ class GlintCommand(val dispatcher: Dispatcher) {
         }
         if (!itemStack.hasGlint()) {
             context.source.sendError(
-                red("This item doesn't have a glint")
+                red("This item does not have a glint")
+            )
+            return 0
+        }
+        if (itemStack.hasGlint() && !itemStack.tag!!.getBoolean("Glint")) {
+            context.source.sendError(
+                red("This item's glint cannot be removed")
             )
             return 0
         }
         itemStack.orCreateTag.putBoolean("Glint", false)
         context.source.sendFeedback(
             green("Glint removed from ") +
-                    aqua(itemStack.name.asString()),
+                    aqua(itemStack.name.copy()),
             false
         )
         PlayerDataManager.resetCoolDown(player.uuid, CoolDowns.GLINT)
         return 1
-    }
-
-    private fun isCoolDownOver(player: ServerPlayerEntity): Boolean {
-        return true
-    }
-
-    private fun getCoolDown(player: ServerPlayerEntity): MutableText {
-        return reset("")
     }
 }

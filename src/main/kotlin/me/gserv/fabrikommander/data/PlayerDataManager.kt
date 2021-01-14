@@ -132,7 +132,7 @@ object PlayerDataManager {
     }
 
     fun getCoolDownSetAt(uuid: UUID, coolDownType: CoolDowns): LocalDateTime? {
-        return LocalDateTime.parse(cache[uuid]?.coolDowns?.get(coolDownType))
+        return LocalDateTime.parse(cache[uuid]?.coolDowns?.getOrDefault(coolDownType, LocalDateTime.MIN.toString()))
     }
 
     fun setCoolDown(uuid: UUID, coolDownType: CoolDowns) {
