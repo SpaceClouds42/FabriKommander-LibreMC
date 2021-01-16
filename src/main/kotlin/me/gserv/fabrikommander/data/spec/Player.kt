@@ -1,7 +1,7 @@
 package me.gserv.fabrikommander.data.spec
 
 import kotlinx.serialization.Serializable
-import me.gserv.fabrikommander.coolDown.CoolDowns
+import me.gserv.fabrikommander.coolDown.CoolDownType
 import java.util.*
 
 @Serializable
@@ -22,5 +22,5 @@ data class Player(
 
     var nick: String? = null,
 
-    var coolDowns: MutableMap<CoolDowns, String> = EnumMap(CoolDowns::class.java),
+    var coolDowns: MutableMap<CoolDownType, String> = EnumMap(CoolDownType::class.java),
 )

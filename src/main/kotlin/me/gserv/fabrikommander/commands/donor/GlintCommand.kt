@@ -1,6 +1,6 @@
 package me.gserv.fabrikommander.commands.donor
 
-import me.gserv.fabrikommander.coolDown.CoolDowns
+import me.gserv.fabrikommander.coolDown.CoolDownType
 import me.gserv.fabrikommander.data.PlayerDataManager
 import me.gserv.fabrikommander.extension.*
 import me.gserv.fabrikommander.utils.*
@@ -47,19 +47,19 @@ class GlintCommand(val dispatcher: Dispatcher) {
             )
             return 0
         }
-        if (player.isCoolDownOver(CoolDowns.GLINT)) {
+        if (player.isCoolDownOver(CoolDownType.GLINT)) {
             itemStack.applyGlint()
             context.source.sendFeedback(
                 green("Glint added to ") +
                         aqua(itemStack.name.copy()),
                 false
             )
-            PlayerDataManager.setCoolDown(player.uuid, CoolDowns.GLINT)
+            PlayerDataManager.setCoolDown(player.uuid, CoolDownType.GLINT)
             return 1
         } else {
             context.source.sendError(
                 red("You cannot use this command for ")  +
-                        gold(player.getCoolDown(CoolDowns.GLINT)!!.prettyPrint())
+                        gold(player.getCoolDownExpiryDuration(CoolDownType.GLINT)!!.prettyPrint())
             )
             return 0
         }
@@ -98,7 +98,7 @@ class GlintCommand(val dispatcher: Dispatcher) {
                     aqua(itemStack.name.copy()),
             false
         )
-        PlayerDataManager.resetCoolDown(player.uuid, CoolDowns.GLINT)
+        PlayerDataManager.resetCoolDown(player.uuid, CoolDownType.GLINT)
         return 1
     }
 }

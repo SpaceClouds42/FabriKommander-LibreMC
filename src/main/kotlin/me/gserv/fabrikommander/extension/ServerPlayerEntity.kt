@@ -1,6 +1,6 @@
 package me.gserv.fabrikommander.extension
 
-import me.gserv.fabrikommander.coolDown.CoolDowns
+import me.gserv.fabrikommander.coolDown.CoolDownType
 import me.gserv.fabrikommander.data.PlayerDataManager
 import me.gserv.fabrikommander.utils.log
 import me.gserv.fabrikommander.utils.ranks
@@ -16,10 +16,10 @@ fun ServerPlayerEntity.hasRankPermissionLevel(rank: String): Boolean {
     return ranks.indexOf(PlayerDataManager.getRank(this.uuid)) >= ranks.indexOf(rank)
 }
 
-fun ServerPlayerEntity.getCoolDown(coolDown: CoolDowns): Duration? {
-    return coolDown.coolDownObject.duration - Duration.between(PlayerDataManager.getCoolDownSetAt(this.uuid, coolDown), LocalDateTime.now())
+fun ServerPlayerEntity.getCoolDownExpiryDuration(coolDownType: CoolDownType): Duration? {
+    return coolDownType.duration - Duration.between(PlayerDataManager.getCoolDownSetAt(this.uuid, coolDownType), LocalDateTime.now())
 }
 
-fun ServerPlayerEntity.isCoolDownOver(coolDown: CoolDowns): Boolean {
-    return coolDown.coolDownObject.duration <= Duration.between(PlayerDataManager.getCoolDownSetAt(this.uuid, coolDown), LocalDateTime.now())
+fun ServerPlayerEntity.isCoolDownOver(coolDownType: CoolDownType): Boolean {
+    return coolDownType.duration <= Duration.between(PlayerDataManager.getCoolDownSetAt(this.uuid, coolDownType), LocalDateTime.now())
 }
