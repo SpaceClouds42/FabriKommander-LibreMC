@@ -23,11 +23,11 @@ class SetHomeCommand(val dispatcher: Dispatcher) {
         val player = context.source.player
         val homes = PlayerDataManager.getHomes(player.uuid)
         val homeCount = homes!!.size
-        var homeLimit = PlayerDataManager.getHomeLimit(player.uuid)
+        var homeLimit = PlayerDataManager.getHomeLimit(player.uuid) ?: 3
         if (homeLimit == 0) {
             return false
         }
-        return (homeCount >= homeLimit!!)
+        return (homeCount >= homeLimit)
     }
 
     fun setHomeCommand(context: Context, name: String = "home"): Int {

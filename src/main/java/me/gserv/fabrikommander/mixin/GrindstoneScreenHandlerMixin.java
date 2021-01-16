@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(GrindstoneScreenHandler.class)
 public abstract class GrindstoneScreenHandlerMixin {
-    @Inject(method = "grind", remap = false, at = @At("RETURN"), cancellable = true)
+    @Inject(method = "grind", at = @At("RETURN"), cancellable = true)
     private void reApplyGlint(ItemStack item, int damage, int amount, CallbackInfoReturnable<ItemStack> cir) {
         if (item.hasTag() && item.getTag().contains("Glint") && item.getTag().getBoolean("Glint")) {
             if (!item.hasEnchantments()) {
