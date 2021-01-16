@@ -86,14 +86,10 @@ public abstract class PlayerManagerMixin {
 
     @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
     public void updatePlayerLatency(CallbackInfo ci) {
-        int counter = 0;
-        if (counter % 40 == 0) {
-            @SuppressWarnings("ConstantConditions")
-            PlayerListMixin packet = (PlayerListMixin) new PlayerListHeaderS2CPacket();
-            packet.setFooter(new LiteralText(formatString("&a&lTPS: #TPS#NMSPT: #MSPT")));
-            packet.setHeader(new LiteralText(formatString("&b&lLibreMC#N&7Uptime: #UPTIME")));
-            this.sendToAll(packet);
-        }
-        counter++;
+        @SuppressWarnings("ConstantConditions")
+        PlayerListMixin packet = (PlayerListMixin) new PlayerListHeaderS2CPacket();
+        packet.setFooter(new LiteralText(formatString("&a&lTPS: #TPS#NMSPT: #MSPT")));
+        packet.setHeader(new LiteralText(formatString("&b&lLibreMC#N&7Uptime: #UPTIME")));
+        this.sendToAll(packet);
     }
 }

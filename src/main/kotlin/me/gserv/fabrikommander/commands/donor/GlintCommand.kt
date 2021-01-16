@@ -2,10 +2,7 @@ package me.gserv.fabrikommander.commands.donor
 
 import me.gserv.fabrikommander.coolDown.CoolDowns
 import me.gserv.fabrikommander.data.PlayerDataManager
-import me.gserv.fabrikommander.extension.getCoolDown
-import me.gserv.fabrikommander.extension.hasRankPermissionLevel
-import me.gserv.fabrikommander.extension.isCoolDownOver
-import me.gserv.fabrikommander.extension.prettyPrint
+import me.gserv.fabrikommander.extension.*
 import me.gserv.fabrikommander.utils.*
 import net.minecraft.server.command.CommandManager
 
@@ -51,7 +48,7 @@ class GlintCommand(val dispatcher: Dispatcher) {
             return 0
         }
         if (player.isCoolDownOver(CoolDowns.GLINT)) {
-            itemStack.orCreateTag.putBoolean("Glint", true)
+            itemStack.applyGlint()
             context.source.sendFeedback(
                 green("Glint added to ") +
                         aqua(itemStack.name.copy()),
@@ -77,6 +74,12 @@ class GlintCommand(val dispatcher: Dispatcher) {
             )
             return 0
         }
+        if (itemStack.count != 1) {
+            context.source.sendError(
+                red("Cannot remove glint from multiple items at once")
+            )
+            return 0
+        }
         if (!itemStack.hasGlint()) {
             context.source.sendError(
                 red("This item does not have a glint")
@@ -89,7 +92,7 @@ class GlintCommand(val dispatcher: Dispatcher) {
             )
             return 0
         }
-        itemStack.orCreateTag.putBoolean("Glint", false)
+        itemStack.removeGlint()
         context.source.sendFeedback(
             green("Glint removed from ") +
                     aqua(itemStack.name.copy()),
