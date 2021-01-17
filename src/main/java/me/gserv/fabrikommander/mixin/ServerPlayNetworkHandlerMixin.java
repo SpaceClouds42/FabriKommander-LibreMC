@@ -57,17 +57,17 @@ public class ServerPlayNetworkHandlerMixin {
                     rawMessage
             );
             info.cancel();
-        } else if (packet.getChatMessage().startsWith("/msg")) {
+        } else if (packet.getChatMessage().startsWith("/msg ")) {
             int spaceAfterTargetPlayer = 5 + packet.getChatMessage().substring(5).indexOf(" ");
             String message = packet.getChatMessage().substring(spaceAfterTargetPlayer);
             String targetPlayer = packet.getChatMessage().substring(5, spaceAfterTargetPlayer);
             log("chat.private", player.getEntityName() + " to " + targetPlayer + ":" + message);
-        } else if (packet.getChatMessage().startsWith("/tell")) {
+        } else if (packet.getChatMessage().startsWith("/tell ")) {
             int spaceAfterTargetPlayer = 6 + packet.getChatMessage().substring(6).indexOf(" ");
             String message = packet.getChatMessage().substring(spaceAfterTargetPlayer);
             String targetPlayer = packet.getChatMessage().substring(6, spaceAfterTargetPlayer);
             log("chat.private", player.getEntityName() + " to " + targetPlayer + ":" + message);
-        } else if (packet.getChatMessage().startsWith("/w")) {
+        } else if (packet.getChatMessage().startsWith("/w ")) {
             int spaceAfterTargetPlayer = 3 + packet.getChatMessage().substring(3).indexOf(" ");
             String message = packet.getChatMessage().substring(spaceAfterTargetPlayer);
             String targetPlayer = packet.getChatMessage().substring(3, spaceAfterTargetPlayer);
