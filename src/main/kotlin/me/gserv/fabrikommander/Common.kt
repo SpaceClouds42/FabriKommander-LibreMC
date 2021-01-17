@@ -36,6 +36,8 @@ object Common : ModInitializer {
         logger.debug("Registering commands.")
 
         // Donor commands
+        AnvilCommand(dispatcher).register()
+        CraftCommand(dispatcher).register()
         GlintCommand(dispatcher).register()
         HatCommand(dispatcher).register()
         NickCommand(dispatcher).register()
