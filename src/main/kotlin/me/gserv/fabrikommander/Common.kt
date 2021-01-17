@@ -37,6 +37,7 @@ object Common : ModInitializer {
 
         // Donor commands
         GlintCommand(dispatcher).register()
+        HatCommand(dispatcher).register()
         NickCommand(dispatcher).register()
 
         // Home management commands
