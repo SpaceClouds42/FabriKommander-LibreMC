@@ -11,7 +11,9 @@
     "PlayerListMixin",
     "PlayerManagerMixin",
     "ServerPlayNetworkHandlerMixin",
-    "TranslatableTextMixin"
+    "TranslatableTextMixin",
+    "cauldrondupepatch.BlockItemMixin",
+    "cauldrondupepatch.BundleItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
