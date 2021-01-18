@@ -14,14 +14,14 @@ import net.minecraft.util.math.BlockPos
 
 class CraftCommand(val dispatcher: Dispatcher) {
     fun register() {
-        val hatNode: Node =
+        val craftNode: Node =
             CommandManager
                 .literal("craft")
                 .requires { it.player.hasRankPermissionLevel("VIP") }
                 .executes { craftCommand(it) }
                 .build()
 
-        dispatcher.root.addChild(hatNode)
+        dispatcher.root.addChild(craftNode)
     }
 
     private fun craftCommand(context: Context): Int {

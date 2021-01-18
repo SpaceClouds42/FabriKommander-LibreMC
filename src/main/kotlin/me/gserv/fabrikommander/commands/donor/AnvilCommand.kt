@@ -22,14 +22,14 @@ import net.minecraft.util.math.BlockPos
 
 class AnvilCommand(val dispatcher: Dispatcher) {
     fun register() {
-        val hatNode: Node =
+        val anvilNode: Node =
             CommandManager
                 .literal("anvil")
                 .requires { it.player.hasRankPermissionLevel("VIP") }
                 .executes { anvilCommand(it) }
                 .build()
 
-        dispatcher.root.addChild(hatNode)
+        dispatcher.root.addChild(anvilNode)
     }
 
     private fun anvilCommand(context: Context): Int {

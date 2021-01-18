@@ -38,6 +38,7 @@ object Common : ModInitializer {
         // Donor commands
         AnvilCommand(dispatcher).register()
         CraftCommand(dispatcher).register()
+        EnderChestCommand(dispatcher).register()
         GlintCommand(dispatcher).register()
         HatCommand(dispatcher).register()
         NickCommand(dispatcher).register()
