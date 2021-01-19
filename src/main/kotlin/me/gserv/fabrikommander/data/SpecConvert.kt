@@ -1,10 +1,12 @@
 package me.gserv.fabrikommander.data
 
+import me.gserv.fabrikommander.coolDown.CoolDownType
 import me.gserv.fabrikommander.data.spec.Home
 import me.gserv.fabrikommander.data.spec.Player
 import me.gserv.fabrikommander.data.spec.Pos
 import me.gserv.fabrikommander.data.spec.old.OldHome
 import me.gserv.fabrikommander.data.spec.old.OldPlayer
+import java.util.*
 
 fun OldHome.toNewHome() = Home(
     name = this.name,
@@ -29,7 +31,9 @@ fun OldPlayer.toNewPlayer(): Player {
         homeLimit = 3,
         muted = false,
         inStaffChat = false,
-        nick = null
+        nick = null,
+        coolDowns = EnumMap(CoolDownType::class.java),
+        lastLogPos = null,
     )
 }
 

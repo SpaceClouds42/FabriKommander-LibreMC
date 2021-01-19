@@ -23,4 +23,6 @@ data class Player(
     var nick: String? = null,
 
     var coolDowns: MutableMap<CoolDownType, String> = EnumMap(CoolDownType::class.java),
+
+    var lastLogPos: Pos? = null,
 )

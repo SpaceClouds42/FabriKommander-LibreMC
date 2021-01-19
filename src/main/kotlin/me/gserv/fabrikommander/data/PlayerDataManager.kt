@@ -46,6 +46,8 @@ object PlayerDataManager {
 
     fun playerLeft(player: ServerPlayerEntity) {
         val uuid = player.uuid
+        setLogPos(uuid, Pos(player.x, player.y, player.z, player.yaw, player.pitch, player.world.registryKey.value))
+
         val data = cache[uuid]
 
         if (data != null) {
@@ -134,12 +136,26 @@ object PlayerDataManager {
         return LocalDateTime.parse(cache[uuid]?.coolDowns?.getOrDefault(coolDownType, LocalDateTime.MIN.toString()))
     }
 
+    fun getLogPos(uuid: UUID): Pos? {
+        return cache[uuid]?.lastLogPos
+    }
+
+    fun setLogPos(uuid: UUID, pos: Pos) {
+        cache[uuid]?.lastLogPos = pos
+
+        saveData(uuid)
+    }
+
     fun setCoolDown(uuid: UUID, coolDownType: CoolDownType) {
         cache[uuid]?.coolDowns?.set(coolDownType, LocalDateTime.now().toString())
+
+        saveData(uuid)
     }
 
     fun resetCoolDown(uuid: UUID, coolDownType: CoolDownType) {
         cache[uuid]?.coolDowns?.set(coolDownType, LocalDateTime.MIN.toString())
+
+        saveData(uuid)
     }
 
     fun isInStaffChat(uuid: UUID): Boolean? {

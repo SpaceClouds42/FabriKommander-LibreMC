@@ -55,6 +55,7 @@ object Common : ModInitializer {
         DieCommand(dispatcher).register()
 
         // Staff commands
+        LogPosCommand(dispatcher).register()
         StaffChatCommand(dispatcher).register()
         RankCommand(dispatcher).register()
         
