@@ -7,7 +7,9 @@ import me.gserv.fabrikommander.data.spec.Home
 import me.gserv.fabrikommander.data.spec.Player
 import me.gserv.fabrikommander.data.spec.Pos
 import me.gserv.fabrikommander.data.spec.old.OldPlayer
+import me.gserv.fabrikommander.SERVER
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
+import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.WorldSavePath
 import org.apache.logging.log4j.LogManager
@@ -39,6 +41,7 @@ object PlayerDataManager {
     }
 
     fun playerJoined(player: ServerPlayerEntity) {
+        SERVER = player.server
         val uuid = player.uuid
 
         cache[uuid] = loadData(player)
@@ -176,13 +179,13 @@ object PlayerDataManager {
 
     fun setNick(uuid: UUID, newNick: String?) {
         cache[uuid]?.nick = newNick
-
+        SERVER.playerManager.sendToAll(PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, SERVER.playerManager.getPlayer(uuid)))
         saveData(uuid)
     }
 
     fun setRank(uuid: UUID, newRank: String) {
         cache[uuid]?.rank = newRank
-
+        SERVER.playerManager.sendToAll(PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, SERVER.playerManager.getPlayer(uuid)))
         saveData(uuid)
     }
 

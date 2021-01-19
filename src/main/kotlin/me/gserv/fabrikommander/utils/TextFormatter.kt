@@ -1,6 +1,7 @@
 package me.gserv.fabrikommander.utils
 
 import me.gserv.fabrikommander.data.PlayerDataManager
+import me.gserv.fabrikommander.extension.nickName
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
@@ -25,7 +26,7 @@ fun customVariables(text: String): String {
 }
 
 fun formatChatMessage(player: ServerPlayerEntity, message: String): MutableText {
-    val name = player.customName()
+    val name = reset("") + player.displayName + reset("")
     val connector = reset(" ") + darkGray(bold(">")) + reset(" ")
     val messageAsMutableText = reset(white(message))
     return name + connector + messageAsMutableText

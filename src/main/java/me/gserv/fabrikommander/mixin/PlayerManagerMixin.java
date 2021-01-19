@@ -8,6 +8,8 @@ import static me.gserv.fabrikommander.utils.TextFormatterKt.*;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -17,6 +19,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.List;
 
 @Mixin(PlayerManager.class)
 public abstract class PlayerManagerMixin {
@@ -47,6 +51,7 @@ public abstract class PlayerManagerMixin {
     @Inject(at = @At("RETURN"), method = "onPlayerConnect")
     private void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         PlayerDataManager.INSTANCE.playerJoined(player);
+        this.sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, player));
 
         // Welcome new player and teleport them to spawn
         if (isNewPlayer(player)) {
@@ -83,6 +88,8 @@ public abstract class PlayerManagerMixin {
 
     @Shadow
     public abstract void sendToAll(Packet<?> packet);
+
+    @Shadow @Final private List<ServerPlayerEntity> players;
 
     @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
     public void updatePlayerLatency(CallbackInfo ci) {

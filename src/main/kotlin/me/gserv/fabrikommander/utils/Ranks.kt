@@ -72,6 +72,13 @@ fun hasRankPermissionLevel(player: ServerPlayerEntity, rank: String): Boolean {
     return player.hasRankPermissionLevel(rank)
 }
 
+@Deprecated(
+    "This was placed in the wrong package :facepalm:",
+    ReplaceWith(
+        "ServerPlayerEntity.nickName()",
+        "import me.gserv.fabrikommander.extension.customName"
+    )
+)
 fun ServerPlayerEntity.customName(): MutableText {
     val prefix = rankToPrefix[PlayerDataManager.getRank(this.uuid)]!!.shallowCopy()
     val name: MutableText
