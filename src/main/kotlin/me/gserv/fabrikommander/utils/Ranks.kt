@@ -47,16 +47,16 @@ val rankToHomeLimit = hashMapOf(
 
 val rankToPrefix = hashMapOf(
     "member" to reset(""),
-    "VIP" to reset("") + gray("[") + darkGreen("VIP") + gray("] ") + reset(""),
-    "VIP+" to reset("") + gray("[") + darkGreen("VIP") + green("+") + gray("] ") + reset(""),
-    "MVP" to reset("") + gray("[") + gold("MVP") + gray("] ") + reset(""),
-    "MVP+" to reset("") + gray("[") + gold("MVP") + green("+") + gray("] ") + reset(""),
-    "OGDON" to reset("") + gray("[") + red("OGDON") + gray("] ") + reset(""),
-    "Builder" to reset("") + gray("[") + darkRed("Builder") + gray("] ") + reset(""),
-    "Helper" to reset("") + gray("[") + green("Helper") + gray("] ") + reset(""),
-    "Mod" to reset("") + gray("[") + aqua("Mod") + gray("] ") + reset(""),
-    "Dev" to reset("") + gray("[") + darkPurple("Dev") + gray("] ") + reset(""),
-    "Owner" to reset("") + gray("[") + blue("Owner") + gray("] ") + reset("")
+    "VIP" to reset("") + darkGray("[") + darkGreen("VIP") + darkGray("] ") + reset(""),
+    "VIP+" to reset("") + darkGray("[") + darkGreen("VIP") + green("+") + darkGray("] ") + reset(""),
+    "MVP" to reset("") + darkGray("[") + gold("MVP") + darkGray("] ") + reset(""),
+    "MVP+" to reset("") + darkGray("[") + gold("MVP") + green("+") + darkGray("] ") + reset(""),
+    "OGDON" to reset("") + darkGray("[") + red("OGDON") + darkGray("] ") + reset(""),
+    "Builder" to reset("") + darkGray("[") + darkRed("Builder") + darkGray("] ") + reset(""),
+    "Helper" to reset("") + darkGray("[") + green("Helper") + darkGray("] ") + reset(""),
+    "Mod" to reset("") + darkGray("[") + aqua("Mod") + darkGray("] ") + reset(""),
+    "Dev" to reset("") + darkGray("[") + darkPurple("Dev") + darkGray("] ") + reset(""),
+    "Owner" to reset("") + darkGray("[") + blue("Owner") + darkGray("] ") + reset("")
 )
 
 val LOGGER = LogManager.getLogger("FabriKommander-LibreMC") as Logger
