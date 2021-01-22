@@ -20,7 +20,7 @@ public abstract class BlockItemMixin {
 
     private ItemEntity lastItem;
 
-    @Inject(method = "method_33261", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "onItemEntityDestroyed", at = @At("HEAD"), cancellable = true)
     private void dropItemContents(ItemEntity itemEntity, CallbackInfo ci) {
         if (this.block instanceof ShulkerBoxBlock) {
             if (lastItem != null && lastItem == itemEntity) {

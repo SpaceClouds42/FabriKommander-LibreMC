@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class BundleItemMixin {
     private ItemEntity lastItem;
 
-    @Inject(method = "method_33261", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "onItemEntityDestroyed", at = @At("HEAD"), cancellable = true)
     private void dropItemContents(ItemEntity itemEntity, CallbackInfo ci) {
         if (lastItem != null && lastItem == itemEntity) {
             System.out.println("Dupe potentially attempted at " + (int) itemEntity.getX() + " " + (int) itemEntity.getY() + " " + (int) itemEntity.getZ() + " in world " + itemEntity.getEntityWorld().getRegistryKey().getValue() + " by player " + DuperLocator.getDuper(itemEntity));
