@@ -31,20 +31,18 @@ public abstract class PlayerListS2CPacketMixin {
 
     @Inject(method = "getGameMode", at = @At(value = "HEAD", target = "Lnet/minecraft/network/packet/s2c/play/PlayerListS2CPacket$Entry;getGameMode()Lnet/minecraft/world/GameMode;"), cancellable = true)
     private void removeSpectatorFlag(CallbackInfoReturnable<GameMode> cir) {
-        if (gameMode == GameMode.SPECTATOR) {
-            cir.setReturnValue(GameMode.SURVIVAL);
-        } else {
-            cir.setReturnValue(gameMode);
-        }
+        //TODO: Figure out a way to hide spectator flag in player list
     }
 
     @Inject(method = "getDisplayName", at = @At(value = "HEAD", target = "Lnet/minecraft/network/packet/s2c/play/PlayerListS2CPacket$Entry;getDisplayName()Lnet/minecraft/text/Text;"), cancellable = true)
     private void modifyDisplayName(CallbackInfoReturnable<Text> cir) {
-        Text text = reset("").append(
-                nickName(SERVER.getPlayerManager().getPlayer(profile.getId()))
-        ).append(
-                gray("      " + latency + "ms")
-        );
-        cir.setReturnValue(text);
+        if (SERVER.getPlayerManager().getPlayer(profile.getId()) != null) {
+            Text text = reset("").append(
+                    nickName(SERVER.getPlayerManager().getPlayer(profile.getId()))
+            ).append(
+                    gray("      " + latency + "ms")
+            );
+            cir.setReturnValue(text);
+        }
     }
 }
