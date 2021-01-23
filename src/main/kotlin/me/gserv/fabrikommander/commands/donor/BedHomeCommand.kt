@@ -31,15 +31,25 @@ class BedHomeCommand(val dispatcher: Dispatcher) {
         val spawnAngle = player.spawnAngle
         val spawnPosSet = player.isSpawnPointSet
         val alive = true
-        val optionalRespawnVec3d = PlayerEntity.findRespawnPosition(world, respawnBlockPos, spawnAngle, spawnPosSet, alive)
-        if (optionalRespawnVec3d.isEmpty) {
+        if (world == null || respawnBlockPos == null) {
             context.source.sendError(
                 red("Respawn position not found")
             )
             return 0
         }
-        PlayerDataManager.setBackPos(player.uuid, Pos(player.x, player.y, player.z, player.yaw, player.pitch, player.world.registryKey.value))
+        val optionalRespawnVec3d =
+            PlayerEntity.findRespawnPosition(world, respawnBlockPos, spawnAngle, spawnPosSet, alive)
+        if (!optionalRespawnVec3d.isPresent) {
+            context.source.sendError(
+                red("Respawn position not found")
+            )
+            return 0
+        }
         val respawnVec3d = optionalRespawnVec3d.get()
+        PlayerDataManager.setBackPos(
+            player.uuid,
+            Pos(player.x, player.y, player.z, player.yaw, player.pitch, player.world.registryKey.value)
+        )
         player.teleport(world, respawnVec3d.x, respawnVec3d.y, respawnVec3d.z, player.yaw, player.pitch)
         return 1
     }
