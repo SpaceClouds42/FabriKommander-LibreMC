@@ -5,6 +5,7 @@
   "mixins": [
     "AnvilScreenHandlerMixin",
     "CraftingScreenHandlerMixin",
+    "GameMessageS2CPacketMixin",
     "GrindstoneScreenHandlerMixin",
     "LiteralTextMixin",
     "PlayerEntityMixin",

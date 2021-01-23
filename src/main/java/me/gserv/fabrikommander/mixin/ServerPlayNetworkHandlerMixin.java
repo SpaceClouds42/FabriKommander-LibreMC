@@ -1,7 +1,6 @@
 package me.gserv.fabrikommander.mixin;
 
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
+import com.mojang.authlib.GameProfile;
 import me.gserv.fabrikommander.data.PlayerDataManager;
 import net.minecraft.network.MessageType;
 import net.minecraft.network.Packet;
@@ -12,9 +11,8 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
+import net.minecraft.util.UserCache;
 import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static me.gserv.fabrikommander.utils.LoggersKt.log;
-import static me.gserv.fabrikommander.utils.RanksKt.*;
+import static me.gserv.fabrikommander.utils.RanksKt.getStaffRanks;
 import static me.gserv.fabrikommander.utils.TextFormatterKt.formatChatMessage;
 import static me.gserv.fabrikommander.utils.TextKt.*;
 
@@ -118,93 +116,4 @@ public abstract class ServerPlayNetworkHandlerMixin {
         });
         log("chat.staff", "[Staff] " + sender + " > " + rawMessage);
     }
-
-    /**
-     * Catches join/leave messages and
-     * formats them
-     *
-     * @param packet
-     * @param listener
-     * @param ci
-     */
-    @Inject(method = "sendPacket(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At("HEAD"), cancellable = true)
-    private void fancyJoinLeaveMessages(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener, CallbackInfo ci) {
-        if (packet instanceof GameMessageS2CPacket && isJoinLeaveMessage((GameMessageS2CPacket) packet)) {
-            if (isJoinMessage((GameMessageS2CPacket) packet)) {
-                broadcastJoinMsg(
-                        reset("")
-                            .append(
-                                darkGray("[")
-                            )
-                            .append(
-                                darkGreen("+")
-                            ).append(
-                                darkGray("] ")
-                            ).append(
-                                (MutableText) ((TranslatableText) ((GameMessageS2CPacket) packet).getMessage()).getArgs()[0]
-                            )
-                        ,
-                        this.player
-                );
-            } else {
-                broadcastLeaveMsg(
-                        reset("")
-                                .append(
-                                        darkGray("[")
-                                )
-                                .append(
-                                        darkRed("-")
-                                ).append(
-                                darkGray("] ")
-                        ).append(
-                                (MutableText) ((TranslatableText) ((GameMessageS2CPacket) packet).getMessage()).getArgs()[0]
-                        )
-                        ,
-                        this.player
-                );
-            }
-            ci.cancel();
-        }
-    }
-
-    /**
-     * Determines if message packet contains
-     * a join/leave message
-     *
-     * @param packet
-     * @return if packet is a join or leave message
-     */
-    private boolean isJoinLeaveMessage(GameMessageS2CPacket packet) {
-        if (packet.getLocation().equals(MessageType.CHAT)) return false;
-        if (packet.getMessage() instanceof TranslatableText) {
-            TranslatableText message = (TranslatableText) packet.getMessage();
-            String key = message.getKey();
-            return key.equals("multiplayer.player.joined") || key.equals("multiplayer.player.left");
-        }
-
-        return false;
-    }
-
-    private boolean isJoinMessage(GameMessageS2CPacket packet) {
-        if (packet.getLocation().equals(MessageType.CHAT)) return false;
-        if (packet.getMessage() instanceof TranslatableText) {
-            TranslatableText message = (TranslatableText) packet.getMessage();
-            String key = message.getKey();
-            return key.equals("multiplayer.player.joined");
-        }
-
-        return false;
-    }
-
-    private boolean isLeaveMessage(GameMessageS2CPacket packet) {
-        if (packet.getLocation().equals(MessageType.CHAT)) return false;
-        if (packet.getMessage() instanceof TranslatableText) {
-            TranslatableText message = (TranslatableText) packet.getMessage();
-            String key = message.getKey();
-            return key.equals("multiplayer.player.left");
-        }
-
-        return false;
-    }
-
 }

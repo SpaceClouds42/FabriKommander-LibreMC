@@ -1,7 +1,6 @@
 package me.gserv.fabrikommander.mixin;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
