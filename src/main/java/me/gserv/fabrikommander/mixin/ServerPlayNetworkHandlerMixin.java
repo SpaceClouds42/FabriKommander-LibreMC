@@ -34,6 +34,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
     @Inject(method = "onGameMessage", at = @At("HEAD"), cancellable = true)
     public void broadcastChatMessage(ChatMessageC2SPacket packet, CallbackInfo info) {
+        // Send messages to staff chat
         if (PlayerDataManager.INSTANCE.isInStaffChat(player.getUuid()) && !packet.getChatMessage().startsWith("/")) {
             String message = packet.getChatMessage();
             broadcastStaffMsg(
@@ -53,6 +54,8 @@ public abstract class ServerPlayNetworkHandlerMixin {
                     player.getEntityName()
             );
             info.cancel();
+
+        // Format chat
         } else if (!packet.getChatMessage().startsWith("/")) {
             String rawMessage = packet.getChatMessage();
 
@@ -62,6 +65,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
                     rawMessage
             );
             info.cancel();
+
         // Log Private Messages
         } else if (packet.getChatMessage().startsWith("/msg ")) {
             int spaceAfterTargetPlayer = 5 + packet.getChatMessage().substring(5).indexOf(" ");
@@ -88,24 +92,6 @@ public abstract class ServerPlayNetworkHandlerMixin {
                 sender.getUuid()
         );
         log("chat.main", "[Chat] " + sender.getEntityName() + " > " + rawMessage);
-    }
-
-    private void broadcastJoinMsg(MutableText message, ServerPlayerEntity sender) {
-        server.getPlayerManager().broadcastChatMessage(
-                message,
-                MessageType.SYSTEM,
-                sender.getUuid()
-        );
-        log("chat.join", "[+] " + sender.getEntityName());
-    }
-
-    private void broadcastLeaveMsg(MutableText message, ServerPlayerEntity sender) {
-        server.getPlayerManager().broadcastChatMessage(
-                message,
-                MessageType.SYSTEM,
-                sender.getUuid()
-        );
-        log("chat.leave", "[-] " + sender.getEntityName());
     }
 
     private void broadcastStaffMsg(MutableText message, MinecraftServer server, String rawMessage, String sender) {
