@@ -96,6 +96,7 @@ object WarpDataManager {
     }
 
     fun shutdown() {
+        //TODO: remove shutdown handler, unneeded for this
         saveData()
     }
 }
