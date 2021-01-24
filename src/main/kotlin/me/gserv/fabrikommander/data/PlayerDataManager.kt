@@ -27,6 +27,7 @@ object PlayerDataManager {
 
     fun setup() {
         ServerLifecycleEvents.SERVER_STARTING.register {
+            SERVER = it
             cache.clear()
             dataDir = it.getSavePath(WorldSavePath.ROOT).resolve("FabriKommander")
 
@@ -41,7 +42,6 @@ object PlayerDataManager {
     }
 
     fun playerJoined(player: ServerPlayerEntity) {
-        SERVER = player.server
         val uuid = player.uuid
 
         cache[uuid] = loadData(player)
