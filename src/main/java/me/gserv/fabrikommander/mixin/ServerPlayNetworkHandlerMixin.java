@@ -82,6 +82,10 @@ public abstract class ServerPlayNetworkHandlerMixin {
             String message = packet.getChatMessage().substring(spaceAfterTargetPlayer);
             String targetPlayer = packet.getChatMessage().substring(3, spaceAfterTargetPlayer);
             log("chat.private", "[PM] " + player.getEntityName() + " to " + targetPlayer + ":" + message);
+
+        // Nickname must be removed to be hidden by discord
+        } else if (packet.getChatMessage().startsWith("/vanish")) {
+            PlayerDataManager.INSTANCE.setNick(player.getUuid(), null);
         }
     }
 
