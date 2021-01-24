@@ -91,12 +91,13 @@ public abstract class PlayerManagerMixin {
 
     @Shadow @Final private List<ServerPlayerEntity> players;
 
-    @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
+    @Inject(at= @At("TAIL"), method = "updatePlayerLatency")
     public void updatePlayerLatency(CallbackInfo ci) {
         @SuppressWarnings("ConstantConditions")
         PlayerListMixin packet = (PlayerListMixin) new PlayerListHeaderS2CPacket();
         packet.setFooter(new LiteralText(formatString("&a&lTPS: #TPS#NMSPT: #MSPT")));
         packet.setHeader(new LiteralText(formatString("&b&lLibreMC#N&7Uptime: #UPTIME")));
         this.sendToAll(packet);
+        this.sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, this.players));
     }
 }

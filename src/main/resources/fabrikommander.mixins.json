@@ -12,6 +12,7 @@
     "PlayerEntityMixin_OverwriteDisplayName",
     "PlayerListMixin",
     "PlayerListS2CPacketMixin",
+    "PlayerListS2CPacketMixin$EntryMixin",
     "PlayerManagerMixin",
     "ServerPlayNetworkHandlerMixin",
     "TranslatableTextMixin",
