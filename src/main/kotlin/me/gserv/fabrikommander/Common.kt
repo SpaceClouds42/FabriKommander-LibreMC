@@ -15,6 +15,7 @@ import me.gserv.fabrikommander.utils.Dispatcher
 import me.gserv.fabrikommander.utils.TablistVariables
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 import net.minecraft.server.MinecraftServer
 import org.apache.logging.log4j.LogManager
@@ -24,6 +25,10 @@ object Common : ModInitializer {
     private val logger = LogManager.getLogger(this::class.java)
 
     override fun onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register {
+            SERVER = it
+        }
+
         PlayerDataManager.setup()
         SpawnDataManager.setup()
         WarpDataManager.setup()
