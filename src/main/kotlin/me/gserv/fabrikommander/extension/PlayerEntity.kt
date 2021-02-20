@@ -3,11 +3,14 @@ package me.gserv.fabrikommander.extension
 import me.gserv.fabrikommander.data.PlayerDataManager
 import me.gserv.fabrikommander.utils.*
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.ClickEvent
 import net.minecraft.text.HoverEvent
 import net.minecraft.text.MutableText
 
 fun PlayerEntity.nickName(): MutableText {
+    PlayerDataManager.playerJoined(this as ServerPlayerEntity)
+
     val prefix = if (rankToPrefix[PlayerDataManager.getRank(this.uuid)]?.shallowCopy() == null) {
         reset("")
     } else {
